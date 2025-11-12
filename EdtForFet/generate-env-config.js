@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 // Lire la variable d'environnement ENABLE_DONATION
-const enableDonation = process.env.ENABLE_DONATION !== 'false';
+// Par défaut FALSE, activé uniquement si explicitement défini à 'true'
+const enableDonation = process.env.ENABLE_DONATION === 'true';
 
 console.log(`🔧 Configuration: ENABLE_DONATION = ${enableDonation}`);
 
