@@ -1,0 +1,41 @@
+<div class="import-container">
+  <h2 class="import-title">استيراد ملفات XML أو .fet</h2>
+  <p class="import-sub">اختر أحد الملفات أو الثلاث ملفات (activities/subgroups/teachers) ثم اضغط على تحليل.</p>
+
+  <!-- hidden native input, opened by the Arabic button -->
+  <input #fileInput type="file" (change)="onFileChange($event)" multiple accept=".xml,.fet" style="display:none" />
+
+  <div class="file-controls">
+    <button class="choose-btn" (click)="fileInput.click()">اختر ملفات</button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>✓ نجح الاستيراد</h3>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="success-message">تم استيراد البيانات بنجاح!</div>
+        <div class="data-summary">
+          <div class="summary-item">
+            <span class="label">الأنشطة:</span>
+            <span class="value">{{ parsed?.activities?.length || 0 }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">المجموعات الجزئية:</span>
+            <span class="value">{{ parsed?.subgroups?.length || 0 }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="label">المعلمون:</span>
+            <span class="value">{{ parsed?.teachers?.length || 0 }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pill" (click)="closeModal()">إغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>

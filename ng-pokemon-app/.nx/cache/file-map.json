@@ -1,0 +1,491 @@
+{
+  "version": "6.0",
+  "nxVersion": "17.1.3",
+  "deps": {
+    "@angular/animations": "~13.3.0",
+    "@angular/common": "~13.3.0",
+    "@angular/compiler": "~13.3.0",
+    "@angular/core": "~13.3.0",
+    "@angular/forms": "~13.3.0",
+    "@angular/platform-browser": "~13.3.0",
+    "@angular/platform-browser-dynamic": "~13.3.0",
+    "@angular/router": "~13.3.0",
+    "@nrwl/angular": "^17.1.3",
+    "materialize-css": "^1.0.0-rc.2",
+    "rxjs": "~7.5.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4",
+    "@angular-devkit/build-angular": "~13.3.11",
+    "@angular/cli": "~13.3.11",
+    "@angular/compiler-cli": "~13.3.0",
+    "@types/jasmine": "~3.10.0",
+    "@types/node": "^12.11.1",
+    "angular-in-memory-web-api": "^0.13.0",
+    "jasmine-core": "~4.0.0",
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.1.0",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "typescript": "~4.6.2"
+  },
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {
+      "ng-pokemon-app": [
+        {
+          "file": ".browserslistrc",
+          "hash": "17600754102500844387"
+        },
+        {
+          "file": ".editorconfig",
+          "hash": "6686520031028425313"
+        },
+        {
+          "file": ".gitignore",
+          "hash": "13044518069027839699"
+        },
+        {
+          "file": ".vscode/extensions.json",
+          "hash": "5331566439708925252"
+        },
+        {
+          "file": ".vscode/launch.json",
+          "hash": "4815948323043747099"
+        },
+        {
+          "file": ".vscode/tasks.json",
+          "hash": "5336636969995539451"
+        },
+        {
+          "file": "README.md",
+          "hash": "14097420071804701790"
+        },
+        {
+          "file": "angular.json",
+          "hash": "7754780803795457148"
+        },
+        {
+          "file": "karma.conf.js",
+          "hash": "7007979418600578621",
+          "deps": [
+            [
+              "npm:karma-jasmine",
+              "dynamic"
+            ],
+            [
+              "npm:karma-chrome-launcher",
+              "dynamic"
+            ],
+            [
+              "npm:karma-jasmine-html-reporter",
+              "dynamic"
+            ],
+            [
+              "npm:karma-coverage",
+              "dynamic"
+            ],
+            [
+              "npm:@angular-devkit/build-angular",
+              "dynamic"
+            ],
+            [
+              "npm:path",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "package-lock.json",
+          "hash": "284380668696634650"
+        },
+        {
+          "file": "package.json",
+          "hash": "11352172075845187102",
+          "deps": [
+            "npm:@angular/animations",
+            "npm:@angular/common",
+            "npm:@angular/compiler",
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@angular/platform-browser",
+            "npm:@angular/platform-browser-dynamic",
+            "npm:@angular/router",
+            "npm:@nrwl/angular",
+            "npm:materialize-css",
+            "npm:rxjs",
+            "npm:tslib",
+            "npm:zone.js",
+            "npm:@angular-devkit/build-angular",
+            "npm:@angular/cli",
+            "npm:@angular/compiler-cli",
+            "npm:@types/jasmine",
+            "npm:@types/node",
+            "npm:angular-in-memory-web-api",
+            "npm:jasmine-core",
+            "npm:karma",
+            "npm:karma-chrome-launcher",
+            "npm:karma-coverage",
+            "npm:karma-jasmine",
+            "npm:karma-jasmine-html-reporter",
+            "npm:typescript"
+          ]
+        },
+        {
+          "file": "qodana.yaml",
+          "hash": "419806333700410063"
+        },
+        {
+          "file": "src/app/app-routing.module.ts",
+          "hash": "10142006275941901532",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/app.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/app.component.html",
+          "hash": "1041947735326460500"
+        },
+        {
+          "file": "src/app/app.component.spec.ts",
+          "hash": "3380932984185950175",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/app.component.ts",
+          "hash": "7883331153598618215",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/app.module.ts",
+          "hash": "5159919166696338739",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser",
+            "npm:@angular/forms",
+            "npm:@angular/common",
+            "npm:angular-in-memory-web-api"
+          ]
+        },
+        {
+          "file": "src/app/in-memory-data.service.spec.ts",
+          "hash": "11126245885434320319",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/in-memory-data.service.ts",
+          "hash": "5062466489166477417",
+          "deps": [
+            "npm:@angular/core",
+            "npm:angular-in-memory-web-api"
+          ]
+        },
+        {
+          "file": "src/app/page-not-found/page-not-found.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/page-not-found/page-not-found.component.html",
+          "hash": "5476539100167816795"
+        },
+        {
+          "file": "src/app/page-not-found/page-not-found.component.spec.ts",
+          "hash": "902216918830171219",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/page-not-found/page-not-found.component.ts",
+          "hash": "6460811577701162416",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/add-pokemon/add-pokemon.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/pokemon/add-pokemon/add-pokemon.component.html",
+          "hash": "16142863513674079075"
+        },
+        {
+          "file": "src/app/pokemon/add-pokemon/add-pokemon.component.spec.ts",
+          "hash": "1941304814089079351",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/add-pokemon/add-pokemon.component.ts",
+          "hash": "3952754707162006131",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/border-card.directive.ts",
+          "hash": "1703283228053431870",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/detail-pokemon/detail-pokemon.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/pokemon/detail-pokemon/detail-pokemon.component.html",
+          "hash": "7923599416387447040"
+        },
+        {
+          "file": "src/app/pokemon/detail-pokemon/detail-pokemon.component.spec.ts",
+          "hash": "6698304181510331801",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/detail-pokemon/detail-pokemon.component.ts",
+          "hash": "1642790599627629164",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/edit-pokemon/edit-pokemon.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/pokemon/edit-pokemon/edit-pokemon.component.html",
+          "hash": "4281729993422771584"
+        },
+        {
+          "file": "src/app/pokemon/edit-pokemon/edit-pokemon.component.spec.ts",
+          "hash": "14102095447707566210",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/edit-pokemon/edit-pokemon.component.ts",
+          "hash": "14602389915350300213",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/list-pokemon/list-pokemon.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/pokemon/list-pokemon/list-pokemon.component.html",
+          "hash": "3009690993645630343"
+        },
+        {
+          "file": "src/app/pokemon/list-pokemon/list-pokemon.component.spec.ts",
+          "hash": "3644416135093891102",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/list-pokemon/list-pokemon.component.ts",
+          "hash": "6309201600669336095",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/loader/loader.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/pokemon/loader/loader.component.html",
+          "hash": "676815157141332690"
+        },
+        {
+          "file": "src/app/pokemon/loader/loader.component.spec.ts",
+          "hash": "5579948731691982140",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/loader/loader.component.ts",
+          "hash": "5782649621551327599",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/mock-pokemon-list.ts",
+          "hash": "7329063519544655748"
+        },
+        {
+          "file": "src/app/pokemon/pokemon-form/pokemon-form.component.css",
+          "hash": "16478251477796256060"
+        },
+        {
+          "file": "src/app/pokemon/pokemon-form/pokemon-form.component.html",
+          "hash": "9520417465250586111"
+        },
+        {
+          "file": "src/app/pokemon/pokemon-form/pokemon-form.component.spec.ts",
+          "hash": "10590366546821707935",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/pokemon-form/pokemon-form.component.ts",
+          "hash": "15353052547648396198",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/pokemon-type-color.pipe.ts",
+          "hash": "8608061849170110696",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/pokemon.module.ts",
+          "hash": "12595789591154734492",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/router",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/pokemon.service.spec.ts",
+          "hash": "1982149077279140913",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/pokemon.service.ts",
+          "hash": "4485960272115468322",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/pokemon.ts",
+          "hash": "1253461196467451918"
+        },
+        {
+          "file": "src/app/pokemon/search-pokemon/search-pokemon.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/pokemon/search-pokemon/search-pokemon.component.html",
+          "hash": "8315084142209946218"
+        },
+        {
+          "file": "src/app/pokemon/search-pokemon/search-pokemon.component.spec.ts",
+          "hash": "14871278111000853662",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/pokemon/search-pokemon/search-pokemon.component.ts",
+          "hash": "14210122389879870528",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/environments/environment.prod.ts",
+          "hash": "5406836414239361753"
+        },
+        {
+          "file": "src/environments/environment.ts",
+          "hash": "17458466784506237106"
+        },
+        {
+          "file": "src/favicon.ico",
+          "hash": "3464744996580215640"
+        },
+        {
+          "file": "src/index.html",
+          "hash": "6115174252421760431"
+        },
+        {
+          "file": "src/main.ts",
+          "hash": "10677612470474905821",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic"
+          ]
+        },
+        {
+          "file": "src/polyfills.ts",
+          "hash": "2035846685621806592",
+          "deps": [
+            "npm:zone.js"
+          ]
+        },
+        {
+          "file": "src/styles.css",
+          "hash": "5195668842064076916"
+        },
+        {
+          "file": "src/test.ts",
+          "hash": "1590235246187698726",
+          "deps": [
+            "npm:zone.js",
+            "npm:@angular/core",
+            "npm:@angular/platform-browser-dynamic"
+          ]
+        },
+        {
+          "file": "tsconfig.app.json",
+          "hash": "9041030522571917449"
+        },
+        {
+          "file": "tsconfig.json",
+          "hash": "6595591744769552336"
+        },
+        {
+          "file": "tsconfig.spec.json",
+          "hash": "17198424518534092990"
+        }
+      ]
+    },
+    "nonProjectFiles": []
+  }
+}

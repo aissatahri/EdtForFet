@@ -1,0 +1,442 @@
+<main class="app-main">
+  <div class="top-section">
+    <div class="header-row">
+      <h2 class="main-title">جداول الأوقات</h2>
+      
+      <!-- Configuration buttons - Top left - Only show after successful import -->
+      <div class="config-buttons" *ngIf="parsed">
+        <button (click)="openConfig()" class="config-btn" title="إعدادات">⚙️</button>
+        <button (click)="clearLocalStorage()" class="clear-btn" title="مسح البيانات">🗑️</button>
+      </div>
+    </div>
+    
+    <!-- Upload section - TOP -->
+    <div class="upload-section">
+      <app-import (parsedChange)="onParsed($event)"></app-import>
+    </div>
+
+    <!-- Controls container - BELOW - Only show after successful import -->
+    <div class="controls-container" *ngIf="parsed">
+      <!-- View mode section -->
+      <div class="control-section">
+        <div class="view-mode">
+          <label title="Voir tous les emplois des enseignants">
+            <input type="radio" name="viewMode" [(ngModel)]="viewMode" value="teachers" />
+            🧑‍🏫 جداول الأساتذة
+          </label>
+          <label title="Voir tous les emplois des classes">
+            <input type="radio" name="viewMode" [(ngModel)]="viewMode" value="subgroups" />
+            🏫 جداول الأقسام
+          </label>
+          <label title="Voir tous les emplois des salles">
+            <input type="radio" name="viewMode" [(ngModel)]="viewMode" value="rooms" />
+            🏢 جدول القاعات
+          </label>
+          <label title="Voir les salles vacantes">
+            <input type="radio" name="viewMode" [(ngModel)]="viewMode" value="vacant" />
+            🕳️ القاعات الشاغرة
+          </label>
+          <label title="Vue globale de tous les emplois du temps">
+            <input type="radio" name="viewMode" [(ngModel)]="viewMode" value="global" />
+            🌐 العرض الشامل
+          </label>
+        </div>
+      </div>
+
+      <!-- Global view options (shown only when global view is selected) -->
+      <div class="control-section" *ngIf="viewMode === 'global'">
+        <div class="global-options">
+          <label>
+            <input type="radio" name="globalOption" [(ngModel)]="globalViewOption" value="teachersByDay" (change)="buildGlobalView()" />
+            الأساتذة / الأيام
+          </label>
+          <label>
+            <input type="radio" name="globalOption" [(ngModel)]="globalViewOption" value="daysByTeacher" (change)="buildGlobalView()" />
+            الأيام / الأساتذة
+          </label>
+        </div>
+      </div>
+
+      <!-- Entity selection section (hidden for vacant rooms and global view) -->
+      <div class="control-section" *ngIf="viewMode !== 'vacant' && viewMode !== 'global'">
+        <select [(ngModel)]="selectedEntity" (change)="onFilterChange()">
+          <option value="">-- اختر --</option>
+          
+          <!-- Teachers grouped by subject -->
+          <ng-container *ngIf="entityMode === 'teacher'">
+            <optgroup *ngFor="let subject of teachersGroupedBySubject | keyvalue" [label]="subject.key">
+              <option *ngFor="let teacher of $any(subject.value)" [value]="teacher.name">{{ getDisplayName('teacher', teacher.name) }}</option>
+            </optgroup>
+          </ng-container>
+          
+          <!-- Classes and Rooms (no grouping) -->
+          <ng-container *ngIf="entityMode !== 'teacher'">
+            <option *ngFor="let o of entityOptions" [value]="o">{{ o }}</option>
+          </ng-container>
+        </select>
+      </div>
+
+      <!-- Action buttons section -->
+      <div class="control-section">
+        <div class="actions">
+          <!-- For teacher/class/room: show both Export PDF and Export All PDF -->
+          <ng-container *ngIf="viewMode !== 'vacant' && viewMode !== 'global'">
+            <button (click)="exportPdf()">تصدير PDF</button>
+            <button (click)="exportAll()">تصدير الكل (PDF)</button>
+          </ng-container>
+          
+          <!-- For vacant rooms: show only Export PDF -->
+          <ng-container *ngIf="viewMode === 'vacant'">
+            <button (click)="exportPdf()">تصدير PDF</button>
+          </ng-container>
+          
+          <!-- For global view: show Export PDF A3 (to be implemented later) -->
+          <ng-container *ngIf="viewMode === 'global'">
+            <button (click)="exportPdfA3()">تصدير PDF (A3)</button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timetable display -->
+  <div id="timetable-print" class="timetable" dir="rtl">
+    <div *ngIf="!parsed">لم يتم استيراد أي بيانات بعد.</div>
+    
+    <!-- Vacant rooms table -->
+    <div *ngIf="parsed && viewMode === 'vacant'">
+      <div class="school-year-header">القاعات الشاغرة - الموسم الدراسي 2026-2025</div>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>اليوم \ الساعة</th>
+            <th *ngFor="let h of hoursList">{{ h }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of vacantRoomsData">
+            <th>{{ row.day }}</th>
+            <td *ngFor="let cell of row.cells" 
+                [attr.colspan]="cell.colspan"
+                [class.has-vacant]="cell.count > 0"
+                [class.no-vacant]="cell.count === 0"
+                [class.free-half-day]="cell.isFreeHalfDay">
+              <div *ngIf="cell.isFreeHalfDay" class="free-label">نصف يوم حر</div>
+              <div class="vacant-rooms-list" *ngIf="!cell.isFreeHalfDay && cell.count > 0">
+                <div class="room-item" *ngFor="let room of cell.rooms">{{ room }}</div>
+              </div>
+              <div *ngIf="!cell.isFreeHalfDay && cell.count === 0" style="color: #999;">لا توجد</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Global View Display -->
+    <div *ngIf="parsed && viewMode === 'global' && globalViewData.length">
+      <div class="school-year-header">التوزيع الأسبوعي - العرض الشامل</div>
+      
+      <!-- Option 1: Teachers as rows, Days/Periods/Hours as columns -->
+      <div *ngIf="globalViewOption === 'teachersByDay'">
+        <table class="global-table-structured">
+          <thead>
+            <!-- Row 1: Days -->
+            <tr>
+              <th rowspan="3">الأستاذ(ة)</th>
+              <th colspan="8">الاثنين</th>
+              <th colspan="8">الثلاثاء</th>
+              <th colspan="8">الأربعاء</th>
+              <th colspan="8">الخميس</th>
+              <th colspan="8">الجمعة</th>
+              <th colspan="8">السبت</th>
+            </tr>
+            <!-- Row 2: Periods -->
+            <tr>
+              <th colspan="4">الفترة الصباح</th>
+              <th colspan="4">الفترة المساء</th>
+              <th colspan="4">الفترة الصباح</th>
+              <th colspan="4">الفترة المساء</th>
+              <th colspan="4">الفترة الصباح</th>
+              <th colspan="4">الفترة المساء</th>
+              <th colspan="4">الفترة الصباح</th>
+              <th colspan="4">الفترة المساء</th>
+              <th colspan="4">الفترة الصباح</th>
+              <th colspan="4">الفترة المساء</th>
+              <th colspan="4">الفترة الصباح</th>
+              <th colspan="4">الفترة المساء</th>
+            </tr>
+            <!-- Row 3: Hours -->
+            <tr>
+              <th *ngFor="let i of [1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4]">{{ i }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of globalViewData">
+              <th>{{ row.teacher }}</th>
+              <td *ngFor="let slot of row.slots" 
+                  [style.display]="slot.hidden ? 'none' : ''"
+                  [attr.colspan]="slot.colspan || 1"
+                  class="slot-cell" 
+                  [class.has-activity]="slot.activity">
+                <div *ngIf="slot.activity" class="slot-content">
+                  <div class="slot-subject">{{ slot.activity.subject }}</div>
+                  <div class="slot-students">{{ slot.activity.students }}</div>
+                  <div class="slot-room">{{ slot.activity.room }}</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Option 2: Days/Hours as rows, Selected Teachers as columns -->
+      <div *ngIf="globalViewOption === 'daysByTeacher'">
+        <div style="overflow-x: auto; max-width: 100%; border: 1px solid #ddd;">
+          <table class="global-table-structured2">
+            <thead>
+              <tr>
+                <th colspan="3">اليوم / الفترة / الساعة</th>
+                <th *ngFor="let teacher of selectedTeachersForGlobal">{{ teacher.name }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let dayData of globalViewData">
+                <ng-container *ngFor="let periodData of dayData.periods; let periodIndex = index">
+                  <tr *ngFor="let hourData of periodData.hours; let hourIndex = index">
+                    <th *ngIf="periodIndex===0 && hourIndex===0" [attr.rowspan]="8">{{ dayData.day }}</th>
+                    <th *ngIf="hourIndex===0" [attr.rowspan]="4">{{ periodData.period }}</th>
+                    <th>{{ hourIndex + 1 }}</th>
+                    <td *ngFor="let slotData of hourData.teachers" 
+                        [style.display]="slotData.hidden ? 'none' : ''"
+                        [attr.rowspan]="slotData.rowspan || 1"
+                        class="slot-cell" 
+                        [class.has-activity]="slotData.activity">
+                      <div *ngIf="slotData.activity" class="slot-content">
+                        <div class="slot-subject">{{ slotData.activity.subject }}</div>
+                        <div class="slot-students">{{ slotData.activity.students }}</div>
+                        <div class="slot-room">{{ slotData.activity.room }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Regular timetable -->
+    <div *ngIf="parsed && processedDays.length && viewMode !== 'vacant' && viewMode !== 'global'">
+      <div class="school-year-header">الموسم الدراسي 2026-2025</div>
+      
+      <!-- Timetable table -->
+      <table>
+        <thead>
+          <tr>
+            <th>اليوم \ الساعة</th>
+            <th *ngFor="let h of hoursList">{{ h }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pd of processedDays">
+            <th>{{ pd.day }}</th>
+            <td *ngFor="let c of pd.cells" [attr.colspan]="c.colspan" 
+                [class.empty-cell]="!c.cell"
+                [style.background]="!c.cell ? 'none rgb(224, 224, 224) !important' : ''">
+              <ng-container *ngIf="c.cells && c.cells.length > 0">
+                <!-- Check if all cells are identical (common course for all groups) -->
+                <ng-container *ngIf="areAllCellsIdentical(c.cells); else showAllCells">
+                  <div class="cell-content">
+                    <div class="subject">{{ c.cells[0].subject || '-' }}</div>
+                    <div class="room" *ngIf="c.cells[0].room && entityMode !== 'room'">{{ c.cells[0].room }}</div>
+                    <div class="students" *ngIf="c.cells[0].students && (entityMode === 'teacher' || entityMode === 'room')">{{ c.cells[0].students }}</div>
+                    <div class="teacher" *ngIf="c.cells[0].teacher && (entityMode === 'class' || entityMode === 'room')">{{ c.cells[0].teacher }}</div>
+                  </div>
+                </ng-container>
+                <ng-template #showAllCells>
+                  <div class="cell-content" *ngFor="let cellItem of c.cells; let isLast = last">
+                    <div class="subject">{{ cellItem.subject || '-' }}</div>
+                    <div class="room" *ngIf="cellItem.room && entityMode !== 'room'">
+                      {{ cellItem.room }}
+                      <strong *ngIf="cellItem.groupSuffix" class="group-suffix"> ({{ cellItem.groupSuffix }})</strong>
+                    </div>
+                    <div class="students" *ngIf="cellItem.students && (entityMode === 'teacher' || entityMode === 'room')">{{ cellItem.students }}</div>
+                    <div class="teacher" *ngIf="cellItem.teacher && (entityMode === 'class' || entityMode === 'room')">{{ cellItem.teacher }}</div>
+                    <hr *ngIf="!isLast" style="margin: 5px 0; border: 1px solid #ccc;">
+                  </div>
+                </ng-template>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- Classes list for teachers -->
+      <div *ngIf="entityMode === 'teacher' && selectedEntity" class="supplementary-section">
+        <h3 class="section-title">الأقسام المسندة:</h3>
+        <div class="classes-list">
+          <span *ngFor="let cls of getTeacherClasses(selectedEntity); let isLast = last" class="class-badge">
+            {{ cls }}<ng-container *ngIf="!isLast">، </ng-container>
+          </span>
+        </div>
+      </div>
+      
+      <!-- Subjects and teachers table for classes -->
+      <div *ngIf="entityMode === 'class' && selectedEntity" class="supplementary-section">
+        <h3 class="section-title">المواد والأساتذة:</h3>
+        <table class="subjects-table-single">
+          <thead>
+            <tr>
+              <th>المادة</th>
+              <th>الأستاذ(ة)</th>
+              <th>المادة</th>
+              <th>الأستاذ(ة)</th>
+              <th>المادة</th>
+              <th>الأستاذ(ة)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let rowData of getClassSubjectsInRows(selectedEntity)">
+              <td>{{ rowData[0]?.subject || '' }}</td>
+              <td>{{ rowData[0]?.teacher || '' }}</td>
+              <td>{{ rowData[1]?.subject || '' }}</td>
+              <td>{{ rowData[1]?.teacher || '' }}</td>
+              <td>{{ rowData[2]?.subject || '' }}</td>
+              <td>{{ rowData[2]?.teacher || '' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="parsed && !processedDays.length">البيانات المستوردة لا تملك تنسيق معاينة جاهز.</div>
+  </div>
+  
+  <!-- Configuration Modal -->
+  <div *ngIf="showConfigModal" class="config-modal-overlay" (click)="closeConfig()">
+    <div class="config-modal" (click)="$event.stopPropagation()">
+      <h2>⚙️ إعدادات جدول الدروس</h2>
+      
+      <!-- Tabs Navigation -->
+      <div class="config-tabs">
+        <button class="tab-btn" [class.active]="configActiveTab === 'info'" (click)="configActiveTab = 'info'">
+          📋 معلومات المؤسسة
+        </button>
+        <button class="tab-btn" [class.active]="configActiveTab === 'teachers'" (click)="configActiveTab = 'teachers'">
+          🧑‍🏫 الأساتذة ({{ teachersList.length }})
+        </button>
+        <button class="tab-btn" [class.active]="configActiveTab === 'rooms'" (click)="configActiveTab = 'rooms'">
+          🏢 القاعات ({{ roomsList.length }})
+        </button>
+        <button class="tab-btn" [class.active]="configActiveTab === 'classes'" (click)="configActiveTab = 'classes'">
+          🏫 الأقسام ({{ classesList.length }})
+        </button>
+      </div>
+      
+      <!-- Tab Content: Info -->
+      <div class="config-section" *ngIf="configActiveTab === 'info'">
+        <div class="config-row">
+          <label>شعار المؤسسة:</label>
+          <div class="logo-upload">
+            <div class="logo-preview" *ngIf="config.logo">
+              <img [src]="config.logo" alt="Logo" />
+              <button type="button" class="remove-logo-btn" (click)="removeLogo()">✕</button>
+            </div>
+            <div class="upload-zone" *ngIf="!config.logo">
+              <input type="file" 
+                     id="logoUpload" 
+                     accept="image/*" 
+                     (change)="onLogoChange($event)"
+                     style="display: none;">
+              <label for="logoUpload" class="upload-label">
+                📁 اختر صورة الشعار
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="config-row">
+          <label>الأكاديمية / المنطقة / المقاطعة:</label>
+          <input type="text" [(ngModel)]="config.establishment" placeholder="مثال: الأكاديمية الجهوية للشرق">
+        </div>
+        <div class="config-row">
+          <label>المديرية / النيابة:</label>
+          <input type="text" [(ngModel)]="config.region" placeholder="مثال: المديرية الإقليمية وجدة أنجاد">
+        </div>
+        <div class="config-row">
+          <label>اسم المؤسسة:</label>
+          <input type="text" [(ngModel)]="config.institution" placeholder="مثال: ثانوية ابن خلدون الإعدادية">
+        </div>
+        <div class="config-row">
+          <label>الموسم الدراسي:</label>
+          <input type="text" [(ngModel)]="config.schoolYear" placeholder="2025-2026">
+        </div>
+        
+        <div class="config-row">
+          <label>السطر الأول (للترويسة):</label>
+          <input type="text" [(ngModel)]="config.headerLine1" placeholder="مثال: المملكة المغربية">
+        </div>
+        
+        <div class="config-row">
+          <label>السطر الثاني (للترويسة):</label>
+          <input type="text" [(ngModel)]="config.headerLine2" placeholder="مثال: وزارة التربية الوطنية والتعليم الأولي والرياضة">
+        </div>
+        
+        <div class="config-row">
+          <label>السطر الثالث (للترويسة - اختياري):</label>
+          <input type="text" [(ngModel)]="config.headerLine3" placeholder="اختياري">
+        </div>
+        
+        <div class="config-row">
+          <label>السطر الرابع (معلومات المؤسسة):</label>
+          <input type="text" [(ngModel)]="config.headerLine4" placeholder="مثال: جهة الشرق – مديرية وجدة – أنجاد – ثانوية عبد الرحمان حجيرة الإعدادية – وحدة">
+        </div>
+      </div>
+      
+      <!-- Tab Content: Teachers -->
+      <div class="config-section" *ngIf="configActiveTab === 'teachers'">
+        <div class="rename-list">
+          <div *ngFor="let teacher of teachersList; let i = index" class="rename-item">
+            <span class="original-name" (click)="config.renames.teachers[teacher.name] = teacher.name" title="انقر للنسخ">{{ teacher.name }}</span>
+            <input type="text" 
+                   [(ngModel)]="config.renames.teachers[teacher.name]" 
+                   placeholder="الاسم الجديد (اختياري)">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tab Content: Rooms -->
+      <div class="config-section" *ngIf="configActiveTab === 'rooms'">
+        <div class="rename-list">
+          <div *ngFor="let room of roomsList; let i = index" class="rename-item">
+            <span class="original-name" (click)="config.renames.rooms[room] = room" title="انقر للنسخ">{{ room }}</span>
+            <input type="text" 
+                   [(ngModel)]="config.renames.rooms[room]" 
+                   placeholder="الاسم الجديد (اختياري)">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tab Content: Classes -->
+      <div class="config-section" *ngIf="configActiveTab === 'classes'">
+        <div class="rename-list">
+          <div *ngFor="let cls of classesList; let i = index" class="rename-item">
+            <span class="original-name" (click)="config.renames.classes[cls] = cls" title="انقر للنسخ">{{ cls }}</span>
+            <input type="text" 
+                   [(ngModel)]="config.renames.classes[cls]" 
+                   placeholder="الاسم الجديد (اختياري)">
+          </div>
+        </div>
+      </div>
+      
+      <div class="config-actions">
+        <button (click)="saveConfig()" class="btn-save">💾 حفظ</button>
+        <button (click)="closeConfig()" class="btn-cancel">❌ إلغاء</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+

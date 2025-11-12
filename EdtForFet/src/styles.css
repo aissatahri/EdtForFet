@@ -1,0 +1,50 @@
+/* Global styles: enable RTL for Arabic UI */
+html, body {
+	direction: rtl;
+	text-align: right;
+	font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Make sure inputs/buttons follow RTL layout nicely */
+input, button, select, textarea {
+	direction: rtl;
+}
+
+/* Page background and container tuning */
+body {
+	background: #fbfbfd;
+	color: #0f172a;
+}
+
+.app-shell {
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+/* Utility: visually hide but keep accessible */
+.sr-only { position: absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0 }
+
+/* Small input/button adjustments */
+button, select, input[type="text"], input[type="file"] {
+	font-family: inherit;
+	font-size: 0.95rem;
+}
+
+/* timetable footer and official header (moved from component to reduce component CSS size) */
+.timetable-footer{margin-top:18px}
+.footer-sep{border:0;height:6px;background:linear-gradient(90deg,#000, #000);margin:18px 0}
+.footer-grid{display:flex;gap:20px;align-items:center;justify-content:space-between}
+.signature-box{flex:0 0 360px;border:2px solid #e6e6e6;padding:28px;border-radius:4px;text-align:center;color:#0b1220}
+.assigned-list{flex:1;text-align:left}
+.assigned-list h3{margin:0 0 8px 0;font-weight:800}
+.assigned-items{background:#fff;border-radius:6px;padding:18px;border:1px solid #e9e9e9;color:#0b1220}
+
+@media (max-width: 940px) {
+	.footer-grid{flex-direction:column;align-items:stretch}
+	.assigned-list{text-align:right}
+}
+
+/* official header area above timetable */
+.official-header{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:10px}
+.crest-placeholder{width:220px;height:52px;border-radius:6px;background:linear-gradient(90deg,#f8fafc,#eef2f6);display:flex;align-items:center;justify-content:center;color:#0b1220;font-weight:700}
+.official-lines{font-size:12px;color:#475569}
