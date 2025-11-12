@@ -1,4 +1,4 @@
-<div class="donation-trigger">
+<div class="donation-trigger" *ngIf="isDonationEnabled">
   <button (click)="openDonationModal()" class="donate-button" title="ادعم هذا المشروع">
     ❤️
   </button>

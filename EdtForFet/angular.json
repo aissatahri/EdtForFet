@@ -28,6 +28,7 @@
               "src/favicon.ico",
               "src/favicon.svg",
               "src/favicon-180.png",
+              "src/env-config.js",
               "src/assets"
             ],
             "styles": [

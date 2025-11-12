@@ -12,11 +12,23 @@ export class DonationComponent {
   showDonationModal = false;
   rib = 'RIB: 157 570 2111180350290005 25';
   
+  // Variable pour activer/désactiver la donation
+  isDonationEnabled = true;
+  
   donationAmounts = [
     { amount: 50, color: 'blue' },
     { amount: 20, color: 'pink' },
     { amount: 10, color: 'purple' }
   ];
+
+  constructor() {
+    // Vérifier la variable d'environnement
+    // Sur Vercel, on peut définir ENABLE_DONATION=false
+    const enableDonation = (window as any).ENABLE_DONATION;
+    if (enableDonation !== undefined) {
+      this.isDonationEnabled = enableDonation === 'true' || enableDonation === true;
+    }
+  }
 
   openDonationModal() {
     this.showDonationModal = true;
