@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImportComponent } from './import/import.component';
+import { DonationComponent } from './donation/donation.component';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { PdfFontsService } from './pdf-fonts.service';
@@ -9,7 +10,7 @@ import { PdfFontsService } from './pdf-fonts.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ImportComponent, CommonModule, FormsModule],
+  imports: [ImportComponent, CommonModule, FormsModule, DonationComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
