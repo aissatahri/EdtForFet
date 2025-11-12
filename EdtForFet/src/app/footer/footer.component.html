@@ -1,0 +1,68 @@
+<footer class="app-footer">
+  <div class="footer-content">
+    <div class="footer-left">
+      <p class="copyright">© {{ currentYear }} <strong>AISSA TAHRI</strong></p>
+    </div>
+    <div class="footer-right">
+      <button (click)="openAboutModal()" class="about-link">À propos</button>
+    </div>
+  </div>
+</footer>
+
+<!-- About Modal -->
+<div class="about-modal" *ngIf="showAboutModal" (click)="closeAboutModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-button" (click)="closeAboutModal()">×</button>
+    
+    <div class="modal-header">
+      <h2>📚 À propos de TimeTableEdtForFet</h2>
+    </div>
+
+    <div class="modal-body">
+      <div class="info-section">
+        <h3>🎯 Description</h3>
+        <p>
+          <strong>TimeTableEdtForFet</strong> est une application web développée pour faciliter la génération 
+          et l'exportation d'emplois du temps à partir de fichiers FET (Free Timetabling Software).
+        </p>
+      </div>
+
+      <div class="info-section">
+        <h3>✨ Fonctionnalités principales</h3>
+        <ul>
+          <li>📥 Import de fichiers FET (XML)</li>
+          <li>📊 Visualisation interactive des emplois du temps</li>
+          <li>📄 Export PDF professionnel (A4 et A3)</li>
+          <li>🌐 Vue globale avec deux options d'affichage</li>
+          <li>🏢 Gestion des salles vacantes</li>
+          <li>⚙️ Configuration personnalisée (logo, informations)</li>
+          <li>🔄 Système de renommage des entités</li>
+          <li>🎨 Support complet RTL pour l'arabe</li>
+        </ul>
+      </div>
+
+      <div class="info-section">
+        <h3>👨‍💻 Développeur</h3>
+        <p class="developer-info">
+          <strong>AISSA TAHRI</strong><br>
+          Développeur Full Stack<br>
+          📧 Contact: <a href="mailto:aissatahri&#64;example.com">aissatahri&#64;example.com</a>
+        </p>
+      </div>
+
+      <div class="info-section">
+        <h3>🛠️ Technologies utilisées</h3>
+        <div class="tech-tags">
+          <span class="tech-tag">Angular</span>
+          <span class="tech-tag">TypeScript</span>
+          <span class="tech-tag">jsPDF</span>
+          <span class="tech-tag">HTML/CSS</span>
+        </div>
+      </div>
+
+      <div class="info-section version-info">
+        <p>Version 1.0.0 - Novembre 2025</p>
+      </div>
+    </div>
+  </div>
+</div>

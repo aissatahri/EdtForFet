@@ -400,9 +400,12 @@
       
       <!-- Tab Content: Teachers -->
       <div class="config-section" *ngIf="configActiveTab === 'teachers'">
+        <div class="instruction-box">
+          <p class="instruction-text">💡 <strong>تلميح:</strong> انقر على الاسم الأصلي لنسخه تلقائيًا إلى حقل الإدخال، ثم قم بتعديله حسب الحاجة.</p>
+        </div>
         <div class="rename-list">
           <div *ngFor="let teacher of teachersList; let i = index" class="rename-item">
-            <span class="original-name" (click)="config.renames.teachers[teacher.name] = teacher.name" title="انقر للنسخ">{{ teacher.name }}</span>
+            <span class="original-name clickable" (click)="config.renames.teachers[teacher.name] = teacher.name" title="👆 انقر للنسخ والتعديل">{{ teacher.name }}</span>
             <input type="text" 
                    [(ngModel)]="config.renames.teachers[teacher.name]" 
                    placeholder="الاسم الجديد (اختياري)">
@@ -412,9 +415,12 @@
       
       <!-- Tab Content: Rooms -->
       <div class="config-section" *ngIf="configActiveTab === 'rooms'">
+        <div class="instruction-box">
+          <p class="instruction-text">💡 <strong>تلميح:</strong> انقر على اسم القاعة لنسخه تلقائيًا إلى حقل الإدخال، ثم قم بتعديله حسب الحاجة.</p>
+        </div>
         <div class="rename-list">
           <div *ngFor="let room of roomsList; let i = index" class="rename-item">
-            <span class="original-name" (click)="config.renames.rooms[room] = room" title="انقر للنسخ">{{ room }}</span>
+            <span class="original-name clickable" (click)="config.renames.rooms[room] = room" title="👆 انقر للنسخ والتعديل">{{ room }}</span>
             <input type="text" 
                    [(ngModel)]="config.renames.rooms[room]" 
                    placeholder="الاسم الجديد (اختياري)">
@@ -424,9 +430,12 @@
       
       <!-- Tab Content: Classes -->
       <div class="config-section" *ngIf="configActiveTab === 'classes'">
+        <div class="instruction-box">
+          <p class="instruction-text">💡 <strong>تلميح:</strong> انقر على اسم القسم لنسخه تلقائيًا إلى حقل الإدخال، ثم قم بتعديله حسب الحاجة.</p>
+        </div>
         <div class="rename-list">
           <div *ngFor="let cls of classesList; let i = index" class="rename-item">
-            <span class="original-name" (click)="config.renames.classes[cls] = cls" title="انقر للنسخ">{{ cls }}</span>
+            <span class="original-name clickable" (click)="config.renames.classes[cls] = cls" title="👆 انقر للنسخ والتعديل">{{ cls }}</span>
             <input type="text" 
                    [(ngModel)]="config.renames.classes[cls]" 
                    placeholder="الاسم الجديد (اختياري)">
@@ -442,4 +451,14 @@
   </div>
 </main>
 
+<!-- Success Modal -->
+<div *ngIf="showSuccessModal" class="success-modal-overlay" (click)="closeSuccessModal()">
+  <div class="success-modal" (click)="$event.stopPropagation()">
+    <div class="success-icon">✓</div>
+    <p class="success-text">{{ successMessage }}</p>
+  </div>
+</div>
+
+<!-- Footer -->
+<app-footer></app-footer>
 

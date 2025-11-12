@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ImportComponent } from './import/import.component';
 import { DonationComponent } from './donation/donation.component';
+import { FooterComponent } from './footer/footer.component';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { PdfFontsService } from './pdf-fonts.service';
@@ -10,7 +11,7 @@ import { PdfFontsService } from './pdf-fonts.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ImportComponent, CommonModule, FormsModule, DonationComponent],
+  imports: [ImportComponent, CommonModule, FormsModule, DonationComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -27,6 +28,10 @@ export class AppComponent {
   globalViewData: any[] = []; // Array for global view (teachers/days grid)
   globalViewOption: string = 'teachersByDay'; // 'teachersByDay' or 'daysByTeacher'
   selectedTeachersForGlobal: any[] = []; // For option 2, limit to selected teachers
+  
+  // Success Modal
+  showSuccessModal: boolean = false;
+  successMessage: string = '';
   
   // Configuration and localStorage
   showConfigModal: boolean = false;
@@ -270,7 +275,19 @@ export class AppComponent {
     this.closeConfig();
     // Rebuild preview with renamed entities
     this.buildGridPreview();
-    alert('تم حفظ الإعدادات');
+    this.showSuccess('تم حفظ الإعدادات بنجاح! ✓');
+  }
+  
+  showSuccess(message: string) {
+    this.successMessage = message;
+    this.showSuccessModal = true;
+    setTimeout(() => {
+      this.showSuccessModal = false;
+    }, 3000);
+  }
+  
+  closeSuccessModal() {
+    this.showSuccessModal = false;
   }
   
   getDisplayName(type: 'teacher' | 'room' | 'class', originalName: string): string {
@@ -653,6 +670,7 @@ export class AppComponent {
     
     // Save PDF
     doc.save(`${this.selectedEntity}_جدول_الحصص.pdf`);
+    this.showSuccess('تم تصدير جدول الحصص بنجاح! 📄✓');
   }
   
   async exportAll() {
@@ -941,6 +959,7 @@ export class AppComponent {
     // Save PDF
     const modeLabel = this.entityMode === 'teacher' ? 'الأساتذة' : (this.entityMode === 'class' ? 'الأقسام' : 'القاعات');
     doc.save(`جداول_الحصص_${modeLabel}.pdf`);
+    this.showSuccess(`تم تصدير جميع جداول ${modeLabel} بنجاح! 📚✓`);
   }
   
   async exportVacantRoomsPdf() {
@@ -1083,6 +1102,7 @@ export class AppComponent {
     
     // Save PDF
     doc.save('القاعات_الشاغرة.pdf');
+    this.showSuccess('تم تصدير القاعات الشاغرة بنجاح! 🏢✓');
   }
   
   async exportPdfA3() {
@@ -1119,6 +1139,7 @@ export class AppComponent {
     
     // Save PDF
     doc.save('جدول_الحصص_الشامل_A3.pdf');
+    this.showSuccess('تم تصدير الجدول الشامل A3 بنجاح! 🌐✓');
   }
   
   async exportTeachersByDayA3(doc: any) {
