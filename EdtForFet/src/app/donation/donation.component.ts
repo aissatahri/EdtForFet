@@ -13,7 +13,7 @@ export class DonationComponent {
   rib = 'RIB: 157 570 2111180350290005 25';
   
   // Variable pour activer/désactiver la donation
-  isDonationEnabled = true;
+  isDonationEnabled = false; // Désactivé par défaut
   
   donationAmounts = [
     { amount: 50, color: 'blue' },
