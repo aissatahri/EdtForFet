@@ -1,0 +1,158 @@
+<div class="container mt-4">
+  <div class="row">
+    <div>
+      <!-- Deuxième panneau : Séances programmées -->
+      <div class="card mb-4">
+        <div
+          class="card-header bg-success text-white d-flex justify-content-between align-items-center"
+        >
+          <h3>Séances Programmées</h3>
+        </div>
+        <div class="card-body">
+          <div class="timetable">
+            <table class="table table-bordered text-center">
+              <thead>
+                <tr>
+                  <th class="day-header">Jour</th>
+                  <th
+                    *ngFor="
+                      let timeSlot of [
+                        '08:30-09:30',
+                        '09:30-10:30',
+                        '10:30-11:30',
+                        '11:30-12:30',
+                        '14:30-15:30',
+                        '15:30-16:30',
+                        '16:30-17:30',
+                        '17:30-18:30'
+                      ]
+                    "
+                    class="time-header"
+                  >
+                    {{ timeSlot }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let day of [
+                      'MONDAY',
+                      'TUESDAY',
+                      'WEDNESDAY',
+                      'THURSDAY',
+                      'FRIDAY',
+                      'SATURDAY'
+                    ];
+                    let rowIndex = index
+                  "
+                >
+                  <td class="day-column">
+                    {{ "SCHEDULE.DAYS." + day | translate }}
+                  </td>
+                  <td
+                    *ngFor="let timeSlot of timetable[rowIndex]"
+                    [ngClass]="{
+                      'current-session': isCurrentSession(timeSlot, day),
+                      'empty-cell': !timeSlot
+                    }"
+                  >
+                    <div *ngIf="timeSlot">
+                      <ng-container
+                        *ngIf="timeSlot.sousClasse?.libelle; else classOnly"
+                      >
+                        {{ timeSlot.sousClasse?.libelle }}
+                      </ng-container>
+                      <ng-template #classOnly>
+                        {{ timeSlot.classe?.libelle }}
+                      </ng-template>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!-- Premier panneau : Statistiques -->
+    <div>
+      <div class="card mb-4">
+        <div
+          class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+        >
+          <h3>{{ "SCHEDULE.STATISTICS" | translate }}</h3>
+          <button (click)="toggleStats()" class="toggle-btn">
+            <span *ngIf="showStats">-</span>
+            <span *ngIf="!showStats">+</span>
+          </button>
+        </div>
+        <div class="card-body" *ngIf="showStats">
+          <div class="container">
+            <!-- Boucle sur les niveaux avec tableau pour chaque niveau -->
+            <div class="d-flex flex-wrap">
+              <div
+                *ngFor="let niveau of niveaux$ | async"
+                class="mb-1 card flex-fill m-2"
+                style="min-width: 300px"
+              >
+                <div class="card shadow-sm">
+                  <div class="card-header bg-primary text-white">
+                    <h4 class="card-title">{{ niveau.libelle }}</h4>
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-bordered table-hover">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>{{ "SCHEDULE.CLASS" | translate }}</th>
+                          <th>
+                            {{ "SCHEDULE.NUMBER_OF_STUDENTS" | translate }}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let classe of niveau.classes">
+                          <td>{{ classe.libelle }}</td>
+                          <td>{{ classe.nombreEleve || 0 }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <!-- Infos totales pour chaque niveau -->
+                    <p>
+                      <strong
+                        >{{ "SCHEDULE.TOTAL_CLASSES" | translate }}:</strong
+                      >
+                      {{ niveau.classes?.size || 0 }}
+                    </p>
+                    <p>
+                      <strong
+                        >{{ "SCHEDULE.TOTAL_STUDENTS" | translate }} :</strong
+                      >
+                      {{ getTotalElevesForNiveau(niveau) }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Section globale avec cartes -->
+            <div class="card bg-info text-white">
+              <div class="card-body text-center">
+                <h3 class="card-title">{{ "SCHEDULE.GLOBAL" | translate }}</h3>
+                <p>
+                  <strong>{{ "SCHEDULE.TOTAL_CLASSES" | translate }}</strong>
+                  {{ totalClasses }}
+                </p>
+                <p>
+                  <strong>{{ "SCHEDULE.TOTAL_CLASSES" | translate }}</strong>
+                  {{ totalEleves }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

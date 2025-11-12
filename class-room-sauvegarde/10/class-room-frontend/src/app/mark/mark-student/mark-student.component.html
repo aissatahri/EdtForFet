@@ -1,0 +1,277 @@
+<div class="container mt-2">
+  <h2>{{'ELEVE.DATER_DEVOIRS' | translate}}</h2>
+  <form [formGroup]="formGroup">
+    <div class="card">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <h5 class="mb-0">{{'SEARCH.CRITERIA' | translate}}</h5>
+        <button
+          class="btn btn-custom"
+          type="button"
+          (click)="togglePanel('panelContent6')"
+        >
+          <span class="toggle-sign">{{
+            isPanelOpen("panelContent6") ? "-" : "+"
+          }}</span>
+        </button>
+      </div>
+      <div
+        id="panelContent6"
+        class="collapse"
+        [ngClass]="{ show: isPanelOpen('panelContent6') }"
+      >
+        <div class="card-body">
+          <div class="row mb-3">
+            <!-- Sélection du Niveau -->
+            <div class="col-md-6 form-group">
+              <label for="niveau">{{'SEARCH.SELECT_LEVEL' | translate}}</label>
+              <select
+                id="niveau"
+                class="form-control"
+                formControlName="niveau"
+                (change)="onNiveauChange($event)"
+              >
+                <option value="">-- {{'SEARCH.CHOOSE_LEVEL' | translate}} --</option>
+                <option
+                  *ngFor="let niveau of niveaux$ | async"
+                  [value]="niveau.idNiveau"
+                >
+                  {{ niveau.libelle }}
+                </option>
+              </select>
+            </div>
+            <!-- Sélection de la Classe -->
+            <div class="col-md-6 form-group">
+              <label for="classe">{{'SEARCH.SELECT_CLASS' | translate}}</label>
+              <select
+                id="classeSelect"
+                class="form-control"
+                formControlName="classe"
+                (change)="onClasseChange($event)"
+              >
+                <option value="">-- {{'SEARCH.CHOOSE_CLASS' | translate}} --</option>
+                <option
+                  *ngFor="let classe of classes"
+                  [value]="classe.idClasse"
+                >
+                  {{ classe.libelle }}
+                </option>
+              </select>
+            </div>
+            <!-- Sélection de la SousClasse -->
+            <div *ngIf="hasSousClasses" class="col-md-6 form-group">
+              <label for="sousClasse">{{'SEARCH.SELECT_SUBCLASS' | translate}}</label>
+              <select
+                class="form-control"
+                id="sousClasseSelect"
+                formControlName="sousClasse"
+                (change)="onSousClasseChange($event)"
+              >
+                <option value="">-- {{'SEARCH.CHOOSE_SUBCLASS' | translate}} --</option>
+                <option
+                  *ngFor="let sousClasse of sousClasses"
+                  [value]="sousClasse.idSousClasse"
+                >
+                  {{ sousClasse.libelle }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <!-- Sélection de la Période -->
+            <div class="col-md-6 form-group">
+              <label for="periode">{{'SEARCH.SELECT_PERIOD' | translate}}</label>
+              <select
+                id="periodeSelect"
+                class="form-control"
+                formControlName="periode"
+                (change)="onPeriodeChange($event)"
+              >
+                <option value="">-- {{'SEARCH.CHOOSE_PERIOD' | translate}} --</option>
+                <option
+                  *ngFor="let periode of periodes"
+                  [value]="periode.idPeriode"
+                >
+                  {{ periode.libelle }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Sélection de Devoir -->
+            <div class="col-md-6 form-group">
+              <label for="devoir">{{'SEARCH.SELECT_HOMEWORK' | translate}}</label>
+              <select
+                id="devoirSelect"
+                class="form-control"
+                formControlName="devoir"
+                (change)="onDevoirChange($event)"
+              >
+                <option value="">-- {{'SEARCH.CHOOSE_HOMEWORK' | translate}} --</option>
+                <option
+                  *ngFor="let devoir of devoirs"
+                  [value]="devoir.idDevoir"
+                >
+                  {{ devoir.libelle }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Formulaire pour les notes/absences -->
+<div class="container mt-2">
+  <form [formGroup]="formGroup">
+    <div class="card">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <h5 class="mb-0">{{'ELEVE.LIST_TITLE' | translate}}</h5>
+        <button
+          class="btn btn-custom"
+          type="button"
+          (click)="togglePanel('panelContent7')"
+        >
+          <span class="toggle-sign">{{
+            isPanelOpen("panelContent7") ? "-" : "+"
+          }}</span>
+        </button>
+      </div>
+      <div
+        id="panelContent7"
+        class="collapse"
+        [ngClass]="{ show: isPanelOpen('panelContent7') }"
+      >
+        <div class="card-body">
+          <div *ngIf="classeEleves.length > 0">
+            <!-- Champs de contrôle pour Date et Heure Globales -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="globalDate">{{'NOTES.DATE_GLOBAL' | translate}}</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="globalDate"
+                  (change)="onGlobalDateChange($event)"
+                />
+              </div>
+              
+              <div class="col-md-6">
+                <label for="globalTime">{{'NOTES.HEURE_GLOBAL' | translate}}</label>
+                <input
+                  type="time"
+                  class="form-control"
+                  id="globalTime"
+                  (change)="onGlobalTimeChange($event)"
+                />
+              </div>
+            </div>
+
+            <table class="table table-striped table-bordered table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th>{{ 'GENERAL.NUM' | translate }}</th>
+                  <th>{{ 'GENERAL.NAME_SURNAME' | translate }}</th>
+                  <th>{{'SEARCH.HOMEWORK' | translate}}</th>
+                  <th>{{'NOTES.DATE' | translate}}</th>
+                  <th>{{'NOTES.HEURE' | translate}}</th>
+                  <th>{{ 'GENERAL.ACTION' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Utilisation de la méthode de pagination -->
+                <tr *ngFor="let devoir of getPaginatedClasseEleves(); let i = index">
+                  <!-- Correction de l'index d'affichage -->
+                  <td>{{ devoir.eleve?.num }}</td>
+                  <td>{{ devoir.eleve?.nom }}</td>
+                  <td>{{ devoir.devoir?.libelle }}</td>
+                  <td>
+                    <input
+                      type="date"
+                      class="form-control"
+                      [value]="devoir.datePassage"
+                      (input)="onDateChange($event, devoir)"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="time"
+                      class="form-control"
+                      [value]="devoir.heurePassage"
+                      (input)="onTimeChange($event, devoir)"
+                    />
+                  </td>
+                  <td>
+                    <button class="btn btn-danger" (click)="removeEleveDevoir(devoir)">
+                      <i class="fas fa-save"></i>{{'GENERAL.DELETE' | translate}}
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <!-- Pagination Controls -->
+            <nav>
+              <ul class="pagination justify-content-center">
+                <!-- Précédent -->
+                <li class="page-item" [class.disabled]="page === 1">
+                  <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">
+                    {{'NOTES.PREVIOUS' | translate}}
+                  </a>
+                </li>
+                <!-- Suivant -->
+                <li class="page-item" [class.disabled]="page === totalPages">
+                  <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault()">
+                    {{'NOTES.NEXT ' | translate}}
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            
+            <!-- Bouton Enregistrer -->
+            <button
+              class="btn btn-primary mt-3"
+              type="button"
+              (click)="enregistrerNotes()"
+            >
+              {{'STUDENT.SUBMIT' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Success Modal -->
+<!-- <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" #successModal>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Succès</h5>
+        <button type="button" class="close" (click)="closeSuccessModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ successMessage }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeSuccessModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Modal de succès -->
+<div class="modal" #successModal>
+  <div class="modal-content">
+    <span class="close" (click)="closeSuccessModal()">&times;</span>
+    <h2>Succès</h2>
+    <p>{{ successMessage }}</p>
+  </div>
+</div>

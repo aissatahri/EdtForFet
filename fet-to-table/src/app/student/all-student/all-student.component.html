@@ -1,1 +1,78 @@
-<p>all-student works!</p>
+
+<div class="container-md mt-3">
+  <div *ngIf="studentListActivity" class="center">
+    <h2>جدول الحصص</h2>
+  </div>
+  <div dir="rtl">
+    <div class="accordion " id="accordion">
+      <div class="accordion-item" *ngFor="let student of studentListActivity; let i = index">
+        <h2 class="accordion-header">
+          <button class="accordion-button text-start w-100"
+                  data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapse-' + i"
+                  aria-expanded="false"
+                  [attr.aria-controls]="'collapse-' + i">
+            {{student.grade}}
+          </button>
+        </h2>
+        <div [id]="'collapse-' + i" class="accordion-collapse collapse"
+             data-bs-parent="#accordion">
+          <div class="accordion-body" >
+            <table class="table table-bordered border-primary table-striped table-bordered table-hover">
+              <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">8:30 - 9:30</th>
+                <th scope="col">9:30 - 10:30</th>
+                <th scope="col">10:30 - 11:30</th>
+                <th scope="col">11:30 - 12:30</th>
+                <th scope="col">14:30 - 15:30</th>
+                <th scope="col">15:30 - 16:30</th>
+                <th scope="col">16:30 - 17:30</th>
+                <th scope="col">17:30 - 18:30</th>
+              </tr>
+              </thead>
+              <tbody class="table-group-divider">
+
+              <tr *ngFor="let row of student.table; let i = index">
+                <th scope="row">{{days[i]}}</th>
+                <ng-container *ngFor="let cell of row; let j = index">
+                  <td *ngIf="(j == 0 || cell != row[j-1])" [attr.colspan]="getColspan(cell, row, j)" style=" text-align : center;" class="border" >
+                    <ng-container *ngIf="cell.includes(';'); else x">
+                      <ng-container *ngFor="let item of cell.split(';'); let k=index">
+                        <div *ngIf="k%2===0; else y" style="border-bottom: 1px solid black;">
+                          {{ item }}
+                        </div>
+                        <ng-template #y>
+                          <div>
+                            {{item}}
+                          </div>
+                        </ng-template>
+
+                      </ng-container>
+                    </ng-container>
+                    <ng-template #x>
+                      {{ cell }}
+                    </ng-template>
+                  </td>
+                </ng-container>
+
+              </tr>
+
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="btn-floating btn-large waves-effect waves-light red z-depth-3"
+     style="position: fixed; bottom: 25px; right: 25px"
+     (click)="getData()">Up</a>
+  <h4 *ngIf='!this.studentList' class="center">
+    <app-loader></app-loader>
+  </h4>
+</div>
+
+

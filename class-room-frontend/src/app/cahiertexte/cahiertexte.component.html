@@ -1,0 +1,212 @@
+<div class="container mt-2">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">معايير البحث</h5>
+      <button
+        class="btn btn-custom"
+        type="button"
+        (click)="togglePanel('panelContent6')"
+      >
+        <span class="toggle-sign">{{
+          isPanelOpen("panelContent6") ? "-" : "+"
+        }}</span>
+      </button>
+    </div>
+    <div
+      id="panelContent6"
+      class="collapse"
+      [ngClass]="{ show: isPanelOpen('panelContent6') }"
+    >
+      <div class="card-body">
+        <div class="row mb-3">
+          <!-- Sélection du Niveau -->
+          <div class="col-md-6 form-group">
+            <label for="niveau">Sélectionnez un niveau :</label>
+            <select
+              id="niveau"
+              class="form-control"
+              (change)="onNiveauChange($event)"
+            >
+              <option value="">-- Choisir un niveau --</option>
+              <option
+                *ngFor="let niveau of niveaux$ | async"
+                [value]="niveau.idNiveau"
+              >
+                {{ niveau.libelle }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Sélection de la Classe -->
+          <div class="col-md-6 form-group">
+            <label for="classe">Sélectionnez une classe :</label>
+            <select
+              id="classeSelect"
+              class="form-control"
+              (change)="onClasseChange($event)"
+              [disabled]="!classes || classes.length === 0"
+            >
+              <option value="">-- Choisir une classe --</option>
+              <option *ngFor="let classe of classes" [value]="classe.idClasse">
+                {{ classe.libelle }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <!-- Sélection de la SousClasse -->
+          <div *ngIf="hasSousClasses" class="col-md-6 form-group">
+            <label for="sousClasse">Sélectionnez une sous-classe :</label>
+            <select
+              class="form-control"
+              id="sousClasseSelect"
+              (change)="onSousClasseChange($event)"
+            >
+              <option value="">-- Choisir une sous-classe --</option>
+              <option
+                *ngFor="let sousClasse of sousClasses"
+                [value]="sousClasse.idSousClasse"
+              >
+                {{ sousClasse.libelle }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-2">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">نتيجة البحث</h5>
+      <button
+        class="btn btn-custom"
+        type="button"
+        (click)="togglePanel('panelContent7')"
+      >
+        <span class="toggle-sign">{{
+          isPanelOpen("panelContent7") ? "-" : "+"
+        }}</span>
+      </button>
+    </div>
+    <div
+      id="panelContent7"
+      class="collapse"
+      [ngClass]="{ show: isPanelOpen('panelContent7') }"
+    >
+      <div class="card-body">
+        <h2>Ajouter un contenu à une séance</h2>
+
+        <form [formGroup]="contenuForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="seanceId">Sélectionner une séance :</label>
+                <select
+                  id="seanceId"
+                  class="form-control"
+                  formControlName="seanceId"
+                  (change)="loadContentsForSeance()"
+                >
+                  <option value="">-- Choisir une séance --</option>
+                  <option
+                    *ngFor="let seance of seances"
+                    [value]="seance.idSeance"
+                  >
+                    {{ seance.typeSeance }} - {{ seance.jour }} ({{
+                      seance.heureDebut
+                    }}
+                    - {{ seance.heureFin }})
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="date">Date :</label>
+                <input
+                  type="date"
+                  id="date"
+                  class="form-control"
+                  formControlName="date"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="heure">Heure :</label>
+                <input
+                  type="time"
+                  id="heure"
+                  class="form-control"
+                  formControlName="heure"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="contenu">Contenu :</label>
+            <editor
+              apiKey="w5swv5cchmneqpn4gvvn3xizcydmm3l7avbkwpjw1b3e2luv"
+              formControlName="contenu"
+              [init]="{
+                height: 300,
+                menubar: false,
+                plugins:
+                  'lists link image preview table directionality textcolor',
+                toolbar:
+                  'undo redo | styles | bold italic | forecolor backcolor | alignleft aligncenter alignright | bullist numlist | link image | table | ltr rtl | preview'
+              }"
+              (onEditorChange)="onEditorContentChange($event)"
+            ></editor>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!contenuForm.valid"
+          >
+            Ajouter
+          </button>
+        </form>
+
+        <!-- New Section for Displaying Contents -->
+        <h2 class="mt-4">Contents for Selected Session</h2>
+        <table class="table table-bordered mt-3">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Heure</th>
+              <th>Contenu</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let contenu of contents">
+              <td>{{ contenu.date }}</td>
+              <td>{{ contenu.heure }}</td>
+              <td>{{ contenu.contenu }}</td>
+              <td>
+                <button class="btn btn-primary" (click)="editContent(contenu)">
+                  Modifier
+                </button>
+                <button
+                  class="btn btn-danger"
+                  (click)="deleteContent(contenu.idContenu!)"
+                >
+                  Supprimer
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="contents.length === 0">
+              <td colspan="4" class="text-center">Aucun contenu trouvé.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

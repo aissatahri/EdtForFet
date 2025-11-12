@@ -1,0 +1,146 @@
+<div class="container mt-2">
+  <h2></h2>
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">{{'CLASS_MANAGEMENT.CRITERE' | translate}}</h5>
+      <button
+        class="btn btn-custom"
+        type="button"
+        (click)="togglePanel('panelContent6')"
+      >
+        <span class="toggle-sign">{{
+          isPanelOpen("panelContent6") ? "-" : "+"
+        }}</span>
+      </button>
+    </div>
+    <div
+      id="panelContent6"
+      class="collapse"
+      [ngClass]="{ show: isPanelOpen('panelContent6') }"
+    >
+      <div class="card-body">
+        <div class="row mb-3">
+          <!-- Sélection du Niveau -->
+          <div class="col-md-6 form-group">
+            <label for="niveau">{{'CLASS_MANAGEMENT.LEVEL' | translate}}</label>
+            <select
+              id="niveau"
+              class="form-control"
+              (change)="onNiveauChange($event)"
+            >
+              <option value="">-- {{'CLASS_MANAGEMENT.SELECT_LEVEL' | translate}} --</option>
+              <option
+                *ngFor="let niveau of niveaux$ | async"
+                [value]="niveau.idNiveau"
+              >
+                {{ niveau.libelle }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Sélection de la Classe -->
+          <div class="col-md-6 form-group">
+            <label for="classe">{{'CLASS_MANAGEMENT.CLASS_NAME' | translate}}</label>
+            <select
+              id="classeSelect"
+              class="form-control"
+              (change)="onClasseChange($event)"
+              [disabled]="!classes || classes.length === 0"
+            >
+              <option value="">-- {{'CLASS_MANAGEMENT.SELECT_CLASS' | translate}} --</option>
+              <option *ngFor="let classe of classes" [value]="classe.idClasse">
+                {{ classe.libelle }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <!-- Sélection de la SousClasse -->
+          <div *ngIf="hasSousClasses" class="col-md-6 form-group">
+            <label for="sousClasse">{{'CLASS_MANAGEMENT.SOUS_CLASS' | translate}}</label>
+            <select
+              class="form-control"
+              id="sousClasseSelect"
+              (change)="onSousClasseChange($event)"
+            >
+              <option value="">-- {{'CLASS_MANAGEMENT.SELECT_SOUS_CLASS' | translate}}--</option>
+              <option
+                *ngFor="let sousClasse of sousClasses"
+                [value]="sousClasse.idSousClasse"
+              >
+                {{ sousClasse.libelle }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mt-2">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">{{ 'CLASS_MANAGEMENT.RESULT_SEARCH' | translate }}</h5>
+      <button
+        class="btn btn-custom"
+        type="button"
+        (click)="togglePanel('panelContent7')"
+      >
+        <span class="toggle-sign">
+          {{ isPanelOpen("panelContent7") ? "-" : "+" }}
+        </span>
+      </button>
+    </div>
+    <div
+      id="panelContent7"
+      class="collapse"
+      [ngClass]="{ show: isPanelOpen('panelContent7') }"
+    >
+      <div class="card-body">
+        <!-- Contenu du panneau -->
+        <div *ngIf="classeEleves && classeEleves.length > 0">
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>{{ 'GENERAL.NUM' | translate }}</th>
+                <th>{{ 'GENERAL.CODE' | translate }}</th>
+                <th>{{ 'GENERAL.NAME_SURNAME' | translate }}</th>
+                <th>{{ 'GENERAL.DATE_OF_BIRTH' | translate }}</th>
+                <th>{{ 'GENERAL.CLASS' | translate }}</th>
+                <th>{{ 'GENERAL.SUBCLASS' | translate }}</th>
+                <th>{{ 'GENERAL.ACTION' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let classeeleve of classeEleves"
+                (click)="goToStudent(classeeleve.idClasseEleve)"
+              >
+                <td>{{ classeeleve.eleve?.num }}</td>
+                <td>{{ classeeleve.eleve?.code }}</td>
+                <td>{{ classeeleve.eleve?.nom }}</td>
+                <td>{{ classeeleve.eleve?.dateNaissance }}</td>
+                <td>{{ classeeleve.classe?.libelle }}</td>
+                <td>{{ classeeleve.sousClasse?.libelle }}</td>
+                <td>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="confirmDelete(classeeleve, $event)"
+                  >
+                    <i class="fas fa-trash"></i>
+                    {{ 'GENERAL.DELETE' | translate }}
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="classeEleves && classeEleves.length === 0">
+          <p>{{ 'GENERAL.NO_STUDENTS_FOUND' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

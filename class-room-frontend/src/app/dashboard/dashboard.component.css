@@ -1,0 +1,94 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden; /* Prévenir les problèmes de débordement */
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #343a40;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  transition: transform 0.3s ease;
+}
+
+/* Sidebar à gauche */
+.sidebar.left-sidebar {
+  left: 0;
+}
+
+/* Sidebar à droite */
+.sidebar.right-sidebar {
+  right: 0;
+}
+
+/* Cacher la sidebar à gauche */
+.sidebar.hidden.left-sidebar {
+  transform: translateX(-200px);
+}
+
+/* Cacher la sidebar à droite */
+.sidebar.hidden.right-sidebar {
+  transform: translateX(200px);
+}
+
+/* Contenu principal */
+.main-content {
+  flex: 1;
+  transition: margin 0.3s ease;
+}
+
+/* Marge à gauche pour la sidebar */
+.main-content.with-left-sidebar {
+  margin-left: 200px;
+}
+
+/* Marge à droite pour la sidebar */
+.main-content.with-right-sidebar {
+  margin-right: 200px;
+}
+
+/* Contenu sans marge (sidebar cachée) */
+.main-content.shifted {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Style pour le bouton hamburger à gauche */
+.hamburger-btn.left {
+  left: 2px;
+}
+
+/* Style pour le bouton hamburger à droite */
+.hamburger-btn.right {
+  right: 2px;
+}
+
+.hamburger-btn {
+  position: absolute;
+  top: 2%; /* Centrer verticalement */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1000; /* Assurer que le bouton est au-dessus d'autres éléments */
+}
+
+.header {
+  height: 60px;
+  background-color: #007bff;
+  color: white;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  position: relative; /* Assurer qu'il est au-dessus du bouton hamburger */
+}
+.dashboard-content {
+  padding: 20px;
+  background-color: #f5f5f5;
+  height: calc(100vh - 60px); /* Ajuster pour la hauteur de l'en-tête */
+  overflow-y: auto;
+}

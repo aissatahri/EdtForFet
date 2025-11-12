@@ -1,0 +1,78 @@
+<div class="container mt-4">
+  <!-- Formulaire pour créer un établissement -->
+  <form [formGroup]="establishmentForm" (ngSubmit)="createEstablishment()">
+    <!-- Champ pour le libellé de l'établissement -->
+    <div class="form-group">
+      <label for="libelle">Libellé</label>
+      <input
+        id="libelle"
+        formControlName="libelle"
+        type="text"
+        class="form-control"
+        placeholder="Nom de l'établissement"
+      />
+      <!-- Message d'erreur pour le libellé -->
+      <div *ngIf="establishmentForm.get('libelle')?.touched && establishmentForm.get('libelle')?.hasError('required')" class="text-danger">
+        Le libellé est obligatoire.
+      </div>
+    </div>
+
+    <!-- Champ pour le téléphone de l'établissement -->
+    <div class="form-group mt-3">
+      <label for="telephone">Téléphone</label>
+      <input
+        id="telephone"
+        formControlName="telephone"
+        type="text"
+        class="form-control"
+        placeholder="Téléphone de l'établissement"
+      />
+      <!-- Message d'erreur pour le téléphone -->
+      <div *ngIf="establishmentForm.get('telephone')?.touched && establishmentForm.get('telephone')?.hasError('required')" class="text-danger">
+        Le téléphone est obligatoire.
+      </div>
+      <div *ngIf="establishmentForm.get('telephone')?.touched && establishmentForm.get('telephone')?.hasError('pattern')" class="text-danger">
+        Le numéro de téléphone doit comporter 10 chiffres.
+      </div>
+    </div>
+
+    <!-- Champ pour l'adresse de l'établissement -->
+    <div class="form-group mt-3">
+      <label for="adresse">Adresse</label>
+      <input
+        id="adresse"
+        formControlName="adresse"
+        type="text"
+        class="form-control"
+        placeholder="Adresse de l'établissement"
+      />
+      <!-- Message d'erreur pour l'adresse -->
+      <div *ngIf="establishmentForm.get('adresse')?.touched && establishmentForm.get('adresse')?.hasError('required')" class="text-danger">
+        L'adresse est obligatoire.
+      </div>
+    </div>
+
+    <!-- Bouton pour soumettre le formulaire -->
+    <button type="submit" class="btn btn-primary mt-4" [disabled]="establishmentForm.invalid">
+      Créer Établissement
+    </button>
+  </form>
+</div>
+
+<!-- Modal pour afficher un message de succès -->
+<div class="modal fade" id="successModalEtab" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Succès</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Établissement créé avec succès !
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,188 @@
+<div class="container mt-2">
+  <!-- <h2>Liste des Élèves</h2> -->
+
+  <!-- Button to redirect to Absences List -->
+  <div class="mb-3">
+    <a routerLink="/dash/absences/" class="btn btn-secondary" (click)="onAbsencesClick()">{{'ABSENCES.TITLE' | translate}}</a>
+  </div>
+  <form [formGroup]="formGroup">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{{'SEARCH.CRITERIA' | translate}}</h5>
+        <button class="btn btn-custom" type="button" (click)="togglePanel('panelContent6')">
+          <span class="toggle-sign">{{ isPanelOpen("panelContent6") ? "-" : "+" }}</span>
+        </button>
+      </div>
+      <div id="panelContent6" class="collapse" [ngClass]="{ show: isPanelOpen('panelContent6') }">
+        <div class="card-body">
+          <div class="row mb-3">
+            <!-- Sélection de la Période (déplacée au début) -->
+            <div class="col-md-6 form-group">
+              <label for="periode">{{'SEARCH.SELECT_PERIOD'|translate}}</label>
+              <select id="periodeSelect" class="form-control" formControlName="periode">
+                <option value="">-- {{'SEARCH.CHOOSE_PERIOD'|translate}} --</option>
+                <option *ngFor="let periode of periodes" [value]="periode.idPeriode">
+                  {{ periode.libelle }}
+                </option>
+              </select>
+            </div>
+            <!-- Sélection du Niveau -->
+            <div class="col-md-6 form-group">
+              <label for="niveau">{{'SEARCH.SELECT_LEVEL'|translate}}</label>
+              <select id="niveau" class="form-control" formControlName="niveau" (change)="onNiveauChange($event)">
+                <option value="">-- {{'SEARCH.CHOOSE_LEVEL'|translate}} --</option>
+                <option *ngFor="let niveau of niveaux$ | async" [value]="niveau.idNiveau">
+                  {{ niveau.libelle }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <!-- Sélection de la Classe -->
+            <div class="col-md-6 form-group">
+              <label for="classe">{{'SEARCH.SELECT_CLASS'|translate}}</label>
+              <select id="classeSelect" class="form-control" formControlName="classe" (change)="onClasseChange($event)">
+                <option value="">-- {{'SEARCH.CHOOSE_CLASS'|translate}} --</option>
+                <option *ngFor="let classe of classes" [value]="classe.idClasse">
+                  {{ classe.libelle }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Sélection de la SousClasse -->
+            <div *ngIf="hasSousClasses" class="col-md-6 form-group">
+              <label for="sousClasse">{{'SEARCH.SELECT_SUBCLASS'|translate}}</label>
+              <select class="form-control" id="sousClasseSelect" formControlName="sousClasse" (change)="onSousClasseChange($event)">
+                <option value="">-- {{'SEARCH.SHOOSE_SUBCLASS'|translate}} --</option>
+                <option *ngFor="let sousClasse of sousClasses" [value]="sousClasse.idSousClasse">
+                  {{ sousClasse.libelle }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Deuxième formulaire pour les absences -->
+<div class="container mt-2">
+  <form [formGroup]="formGroup">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">{{'CLASS_MANAGEMENT.RESULT_SEARCH' | translate}}</h5>
+        <button class="btn btn-custom" type="button" (click)="togglePanel('panelContent7')">
+          <span class="toggle-sign">{{ isPanelOpen("panelContent7") ? "-" : "+" }}</span>
+        </button>
+      </div>
+      <div id="panelContent7" class="collapse" [ngClass]="{ show: isPanelOpen('panelContent7') }">
+        <div class="card-body">
+          <!-- Table des élèves avec checkboxes pour les absences -->
+          <div *ngIf="classeEleves && classeEleves.length > 0">
+            <table class="table table-striped table-bordered table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th>{{ 'GENERAL.NUM' | translate }}</th>
+                  <th>{{ 'GENERAL.CODE' | translate }}</th>
+                  <th>{{ 'GENERAL.NAME_SURNAME' | translate }}</th>
+                  <th>{{ 'GENERAL.DATE_OF_BIRTH' | translate }}</th>
+                  <th>{{ 'GENERAL.CLASS' | translate }}</th>
+                  <th>{{ 'GENERAL.SUBCLASS' | translate }}</th>
+                  <th>{{ 'ABSENCES.ABSENCE' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let classeeleve of getPaginatedClasseEleves(); let i = index">
+                  <td>{{ classeeleve.eleve?.num }}</td>
+                  <td>{{ classeeleve.eleve?.code }}</td>
+                  <td>{{ classeeleve.eleve?.nom }}</td>
+                  <td>{{ classeeleve.eleve?.dateNaissance }}</td>
+                  <td>{{ classeeleve.classe?.libelle }}</td>
+                  <td>{{ classeeleve.sousClasse?.libelle }}</td>
+                  <td>
+                    <input type="checkbox" [checked]="classeeleve.eleve?.isAbsent" (change)="onAbsenceChange(classeeleve.eleve!, $event)" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <!-- Pagination Controls -->
+          <div class="pagination-controls d-flex justify-content-center align-items-center my-4">
+            <button class="btn btn-primary mx-2" (click)="previousPage()" [disabled]="page === 1">
+              {{'STUDENT.PREVIOUS' | translate}}
+            </button>
+            <span class="mx-2">{{'GENERAL.PAGE' | translate}} {{ page }} / {{ totalPages }}</span>
+            <button class="btn btn-primary mx-2" (click)="nextPage()" [disabled]="page === totalPages">
+              {{'STUDENT.NEXT' | translate}}
+            </button>
+          </div>
+          
+          <!-- Message si aucun élève n'est trouvé -->
+          <div *ngIf="classeEleves && classeEleves.length === 0">
+            <p>{{'GENERAL.NO_STUDENTS_FOUND' | translate}}</p>
+          </div>
+          
+          <!-- Bouton pour soumettre les absences -->
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <button type="submit" class="btn btn-primary" (click)="openModal()" [disabled]="!atLeastOneChecked">
+                {{'STUDENT.SUBMIT' | translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Modal Bootstrap pour saisir la date et l'heure -->
+<div #absenceModal class="modal fade" id="absenceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Saisir la date et l'heure de l'absence</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="absenceDate">Date de l'absence</label>
+            <input type="date" class="form-control" id="absenceDate" [(ngModel)]="selectedDate" name="selectedDate" required>
+          </div>
+          <div class="form-group">
+            <label for="absenceTime">Heure de l'absence</label>
+            <input type="time" class="form-control" id="absenceTime" [(ngModel)]="selectedTime" name="selectedTime" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+        <button type="button" class="btn btn-primary" (click)="onModalSubmit()">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de succès -->
+<div #successModal class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Succès</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeSuccessModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Les absences ont été soumises avec succès.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="closeSuccessModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

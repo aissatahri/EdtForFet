@@ -1,0 +1,179 @@
+<div class="container">
+    <h2>{{"CLASS_MANAGEMENT.TITLE" | translate}}</h2>
+  
+    <form [formGroup]="classeForm" (ngSubmit)="onSubmit()">
+      <div class="row mb-3">
+        <!-- ComboBox pour sélectionner le niveau -->
+        <div class="col-md-3">
+          <label for="niveau">{{"CLASS_MANAGEMENT.LEVEL" | translate}}</label>
+          <select id="niveau" formControlName="niveau" class="form-select" required (change)="onNiveauChange()">
+            <option value="">--{{ 'CLASS_MANAGEMENT.SELECT_LEVEL' | translate }}--</option>
+            <option *ngFor="let niveau of niveaux$ | async" [value]="niveau.idNiveau">
+              {{ niveau.libelle }}
+            </option>
+            <option value="all">{{ 'CLASS_MANAGEMENT.ALL_LEVELS' | translate }}</option>
+          </select>
+        </div>
+    
+        <!-- Libellé de la classe -->
+        <div class="col-md-3">
+          <label for="libelle">{{ 'CLASS_MANAGEMENT.LABEL' | translate }}</label>
+          <input
+            id="libelle"
+            type="text"
+            formControlName="libelle"
+            class="form-control"
+            placeholder="Libellé de la classe"
+            required
+          />
+        </div>
+    
+        <!-- Nombre des élèves -->
+        <div class="col-md-3">
+          <label for="nbEleve">{{ 'CLASS_MANAGEMENT.NUMBER_OF_STUDENTS' | translate }}</label>
+          <input
+            id="nbEleve"
+            type="number"
+            formControlName="nbEleve"
+            class="form-control"
+            placeholder="Nombre élèves"
+            required
+          />
+        </div>
+    
+        <div class="col-md-3 d-flex align-items-center">
+          <div class="form-check d-flex align-items-center">
+            <input
+              id="groupe"
+              formControlName="isGroupe"
+              type="checkbox"
+              class="form-check-input me-2"
+            />
+            <label for="groupe" class="form-check-label me-2">Groupe</label>
+            <input
+              id="nbGroupe"
+              formControlName="nbGroupe"
+              type="number"
+              min="0"
+              class="form-control"
+              placeholder="Ex: 30"
+              [disabled]="classeForm.get('isGroupe')?.value"
+            />
+          </div>
+        </div>
+    
+        <!-- Bouton pour soumettre le formulaire -->
+        <div class="col-md-3 align-self-end">
+          <button type="submit" class="btn btn-primary">
+            {{ isEditing ? ('CLASS_MANAGEMENT.EDIT' | translate) : ('CLASS_MANAGEMENT.ADD' | translate) }}
+          </button>
+          
+          <button *ngIf="isEditing" type="button" class="btn btn-secondary ms-2" (click)="resetForm()">
+            {{"CLASS_MANAGEMENT.CANCEL" | translate}}
+          </button>
+        </div>
+      </div>
+    </form>
+    
+  
+    <!-- Table pour afficher la liste des devoirs -->
+    <table class="table table-bordered mt-4">
+      <thead class="table-dark">
+        <tr>
+          <th>{{"CLASS_MANAGEMENT.CLASS_NAME" | translate}}</th>
+          <th>{{"CLASS_MANAGEMENT.NUMBER_OF_STUDENTS" | translate}}</th>
+          <th>{{"CLASS_MANAGEMENT.LEVEL" | translate}}</th>
+          <th class="text-center">{{"CLASS_MANAGEMENT.ACTIONS" | translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let classe of classes$ | async">
+          <td>{{ classe.libelle }}</td>
+          <td>{{ classe.nombreEleve }}</td>
+          <td>{{ classe.niveau?.libelle }}</td>
+          <td class="text-center">
+            <!-- Bouton pour éditer -->
+            <button
+              class="btn btn-warning btn-sm me-2"
+              (click)="editClasse(classe)"
+            >
+            {{"CLASS_MANAGEMENT.EDIT" | translate}}
+            </button>
+          
+            <!-- Bouton pour supprimer -->
+            <button
+              class="btn btn-danger btn-sm me-2"
+              (click)="confirmDelete(classe)"
+            >
+              {{"CLASS_MANAGEMENT.DELETE" | translate}}
+            </button>
+          
+            <!-- Bouton pour importer -->
+            <button
+              class="btn btn-info btn-sm me-2"
+              (click)="triggerFileInput(classe)"
+            >
+            {{"CLASS_MANAGEMENT.IMPORT_FILE" | translate}}
+            </button>
+          
+            <!-- Input file caché pour l'importation de fichier -->
+            <input
+              type="file"
+              style="display: none;"
+              #fileInput
+              (change)="onFileChange($event, classe)"
+              accept=".xlsx, .xls"
+            />
+          </td>
+          
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Modal de succès pour la création ou la mise à jour -->
+    <ng-template #successModalClasse let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title">{{"CLASS_MANAGEMENT.ACTIONS" | translate}}</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+      </div>
+      <div class="modal-body">
+        {{ successMessage }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modal.close()">OK</button>
+      </div>
+    </ng-template>
+  
+    <!-- Modal de confirmation de suppression -->
+    <ng-template #confirmDeleteModalClasse let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
+        <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      {{"CLASS_MANAGEMENT.CONFIRM_DELETE" | translate}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="deleteClasse(); modal.dismiss()">{{"CLASS_MANAGEMENT.DELETE" | translate}}</button>
+      </div>
+    </ng-template>
+  </div>
+  
+  <!-- Modal de sélection du type de partition -->
+  <ng-template #selectPartitionModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">{{"CLASS_MANAGEMENT.PARTITION_TYPE" | translate}}</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <p>{{"CLASS_MANAGEMENT.PARTITION_TYPE" | translate}}</p>
+      <div class="d-flex justify-content-around">
+        <button type="button" class="btn btn-primary" (click)="modal.close('pair-impair')">{{"CLASS_MANAGEMENT.PAIR_IMPAIR" | translate}}</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('moitie')">{{"CLASS_MANAGEMENT.HALF" | translate}}</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.close('sans')">{{"CLASS_MANAGEMENT.NO_PARTITION" | translate}}</button>
+      </div>
+    </div>
+  </ng-template>
+  
+  

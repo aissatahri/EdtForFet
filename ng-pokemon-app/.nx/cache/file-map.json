@@ -43,8 +43,32 @@
           "hash": "6686520031028425313"
         },
         {
+          "file": ".firebase/hosting.ZGlzdFxuZy1wb2tlbW9uLWFwcA.cache",
+          "hash": "16717820240907506336"
+        },
+        {
+          "file": ".firebaserc",
+          "hash": "4632376730113762051"
+        },
+        {
           "file": ".gitignore",
           "hash": "13044518069027839699"
+        },
+        {
+          "file": ".nx/cache/file-map.json",
+          "hash": "660053487655968257"
+        },
+        {
+          "file": ".nx/cache/lockfile.hash",
+          "hash": "7741647468745657221"
+        },
+        {
+          "file": ".nx/cache/parsed-lock-file.json",
+          "hash": "7426287264457999988"
+        },
+        {
+          "file": ".nx/cache/project-graph.json",
+          "hash": "179448010874179767"
         },
         {
           "file": ".vscode/extensions.json",
@@ -64,7 +88,11 @@
         },
         {
           "file": "angular.json",
-          "hash": "7754780803795457148"
+          "hash": "12187124302222653405"
+        },
+        {
+          "file": "firebase.json",
+          "hash": "12103131795911610804"
         },
         {
           "file": "karma.conf.js",
@@ -138,7 +166,7 @@
         },
         {
           "file": "src/app/app-routing.module.ts",
-          "hash": "10142006275941901532",
+          "hash": "1414517628844584852",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/router"
@@ -169,13 +197,44 @@
         },
         {
           "file": "src/app/app.module.ts",
-          "hash": "5159919166696338739",
+          "hash": "13022968919368484370",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/platform-browser",
             "npm:@angular/forms",
             "npm:@angular/common",
             "npm:angular-in-memory-web-api"
+          ]
+        },
+        {
+          "file": "src/app/auth.guard.spec.ts",
+          "hash": "14265259115332049529",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/auth.guard.ts",
+          "hash": "16543143262269092005",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/auth.service.spec.ts",
+          "hash": "10697900076114607965",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/auth.service.ts",
+          "hash": "9227992299378511036",
+          "deps": [
+            "npm:@angular/core",
+            "npm:rxjs"
           ]
         },
         {
@@ -191,6 +250,29 @@
           "deps": [
             "npm:@angular/core",
             "npm:angular-in-memory-web-api"
+          ]
+        },
+        {
+          "file": "src/app/login/login.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/login/login.component.html",
+          "hash": "5652061022226281237"
+        },
+        {
+          "file": "src/app/login/login.component.spec.ts",
+          "hash": "5626136125404630267",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/login/login.component.ts",
+          "hash": "2613375815032198078",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
           ]
         },
         {
@@ -372,7 +454,7 @@
         },
         {
           "file": "src/app/pokemon/pokemon.module.ts",
-          "hash": "12595789591154734492",
+          "hash": "12342860843930663500",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",

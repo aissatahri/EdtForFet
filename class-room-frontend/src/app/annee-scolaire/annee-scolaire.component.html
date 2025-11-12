@@ -1,0 +1,161 @@
+<!-- Modal de confirmation -->
+<div
+  class="modal fade"
+  id="confirmDeleteModal"
+  tabindex="-1"
+  aria-labelledby="confirmDeleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">
+          {{ 'ANNEE_SCOLAIRE.CONFIRM_DELETE' | translate }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        {{ 'ANNEE_SCOLAIRE.CONFIRM_DELETE' | translate }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          {{ 'CLASS_MANAGEMENT.CANCEL' | translate }}
+        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+          {{ 'ANNEE_SCOLAIRE.DELETE' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de succès -->
+<div
+  class="modal fade"
+  id="successModal"
+  tabindex="-1"
+  aria-labelledby="successModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">{{ 'ANNEE_SCOLAIRE.TITLE' | translate }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">{{ 'ANNEE_SCOLAIRE.SUCCESS_MESSAGE' | translate }}</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          {{ 'COMMON.CLOSE' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Formulaire et table -->
+<form [formGroup]="anneeForm" (ngSubmit)="onSubmit()" class="mb-4">
+  <div class="row align-items-end">
+    <div class="col-md-3 mb-3">
+      <label for="libelle" class="form-label">{{ 'ANNEE_SCOLAIRE.LIBELLE' | translate }}</label>
+      <input
+        type="text"
+        id="libelle"
+        formControlName="libelle"
+        class="form-control"
+        placeholder="{{ 'ANNEE_SCOLAIRE.LIBELLE' | translate }}"
+      />
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="dateDebut" class="form-label">{{ 'ANNEE_SCOLAIRE.DATE_DEBUT' | translate }}</label>
+      <input
+        type="date"
+        id="dateDebut"
+        formControlName="dateDebut"
+        class="form-control"
+      />
+      <div
+        *ngIf="
+          anneeForm.hasError('dateInvalid') &&
+          anneeForm.get('dateDebut')?.touched
+        "
+        class="text-danger"
+      >
+        {{ 'ANNEE_SCOLAIRE.ERROR_MESSAGE' | translate }}
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label for="dateFin" class="form-label">{{ 'ANNEE_SCOLAIRE.DATE_FIN' | translate }}</label>
+      <input
+        type="date"
+        id="dateFin"
+        formControlName="dateFin"
+        class="form-control"
+      />
+      <div
+        *ngIf="
+          anneeForm.hasError('dateInvalid') && anneeForm.get('dateFin')?.touched
+        "
+        class="text-danger"
+      >
+        {{ 'ANNEE_SCOLAIRE.ERROR_MESSAGE' | translate }}
+      </div>
+    </div>
+    <div class="col-md-3 mb-3 d-flex justify-content-end">
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary me-2">
+          {{ editMode ? ('ANNEE_SCOLAIRE.EDIT' | translate) : ('ANNEE_SCOLAIRE.ADD' | translate) }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="resetForm()"
+          *ngIf="editMode"
+        >
+          {{ 'CLASS_MANAGEMENT.CANCEL' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<table class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>{{ 'ANNEE_SCOLAIRE.LIBELLE' | translate }}</th>
+      <th>{{ 'ANNEE_SCOLAIRE.DATE_DEBUT' | translate }}</th>
+      <th>{{ 'ANNEE_SCOLAIRE.DATE_FIN' | translate }}</th>
+      <th>{{ 'ANNEE_SCOLAIRE.ACTIONS' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ anneeScolaire?.idAnneeScolaire }}</td>
+      <td>{{ anneeScolaire?.libelle }}</td>
+      <td>{{ anneeScolaire?.dateDebut | date : "dd/MM/yyyy" }}</td>
+      <td>{{ anneeScolaire?.dateFin | date : "dd/MM/yyyy" }}</td>
+      <td class="text-center">
+        <button class="btn btn-warning btn-sm me-2" (click)="editAnnee(anneeScolaire)">
+          <i class="fa fa-edit"></i> {{ 'ANNEE_SCOLAIRE.EDIT' | translate }}
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          (click)="deleteAnnee(anneeScolaire?.idAnneeScolaire!)"
+        >
+          <i class="fa fa-trash"></i> {{ 'ANNEE_SCOLAIRE.DELETE' | translate }}
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,195 @@
+<div class="container">
+    <button class="btn btn-primary mb-3" (click)="addNiveau()">
+      Ajouter un Niveau
+    </button>
+  
+    <!-- Formulaire principal -->
+    <form [formGroup]="niveauForm" (ngSubmit)="onSubmit()">
+      <div formArrayName="niveau">
+        <div
+          *ngFor="let niveau of niveau.controls; let i = index"
+          [formGroupName]="i"
+          class="mb-3"
+        >
+          <div class="row g-3 align-items-center">
+            <div class="col-md-4">
+              <label for="libelle-{{ i }}">Libellé:</label>
+              <input
+                id="libelle-{{ i }}"
+                formControlName="libelle"
+                type="text"
+                class="form-control"
+                placeholder="Libellé"
+                required
+              />
+            </div>
+
+            <div class="col-md-3">
+                <label for="nombreClasse-{{ i }}">Nombre de Classes:</label>
+                <input
+                  id="nombreClasse-{{ i }}"
+                  formControlName="nombreClasse"
+                  type="number"
+                  min="0"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="col-md-3 d-flex align-items-center">
+                <div class="form-check d-flex align-items-center">
+                  <input
+                    id="groupe-{{ i }}"
+                    formControlName="isGroupe"
+                    type="checkbox"
+                    class="form-check-input me-2"
+                  />
+                  <label for="groupe-{{ i }}" class="form-check-label me-2">
+                    Groupe
+                  </label>
+                  <input
+                    id="nbGroupe-{{ i }}"
+                    formControlName="nbGroupe"
+                    type="number"
+                    min="0"
+                    class="form-control"
+                    placeholder="Ex: 30"
+                    [disabled]="!niveau.get('isGroupe')?.value"
+                  />
+                </div>
+              </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="removeNiveau(i)"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <button type="submit" class="btn btn-success mt-3">Soumettre</button>
+    </form>
+  
+    <!-- Table de visualisation des Niveaux -->
+    <div class="mt-2">
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Libellé</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let niveau of niveaux$ | async; let i = index">
+            <td>{{ niveau.libelle }} </td>
+            <td class="text-center">
+              <button
+                class="btn btn-warning btn-sm me-2"
+                (click)="editNiveau(niveau)"
+              >
+                <i class="fas fa-edit"></i> Éditer
+              </button>
+              <button
+                class="btn btn-danger btn-sm me-2"
+                (click)="confirmDeleteNiveau(niveau)"
+              >
+                <i class="fas fa-trash"></i> Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Formulaire de mise à jour -->
+    <div *ngIf="isEditing" class="mt-4">
+      <h4>Mise à jour de la période</h4>
+      <form [formGroup]="editForm" (ngSubmit)="onUpdate()">
+        <div class="row g-3 align-items-center">
+          <div class="col-md-3 mb-3">
+            <label>Libellé:</label>
+            <input
+              formControlName="libelle"
+              type="text"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-3 mb-3">
+            <button type="submit" class="btn btn-success">Modifier</button>
+          </div>
+          <div class="col-md-2 mb-3">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="cancelEdit()"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  
+    <button
+      class="btn btn-primary mb-3"
+      (click)="toggleClasse()"
+      [attr.aria-expanded]="showClasse"
+    >
+      {{ showClasse ? "Cacher Classes" : "Afficher Classe" }}
+    </button>
+    <!-- Conditionally display the app-devoir component using Bootstrap's collapse feature -->
+    <div *ngIf="showClasse">
+      <app-classe></app-classe>
+    </div>
+  
+    <!-- Modal de succès -->
+    <ng-template #successModalNiveau let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title">Succès</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="modal.dismiss()"
+        ></button>
+      </div>
+      <div class="modal-body">{{ successMessage }}</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modal.close()">
+          OK
+        </button>
+      </div>
+    </ng-template>
+  
+    <!-- Modal de confirmation de suppression -->
+    <ng-template #confirmDeleteModalNiveau let-modal>
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="modal.dismiss()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer ce Niveau ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)=" modal.dismiss()"
+        >
+          Supprimer
+        </button>
+      </div>
+    </ng-template>
+  </div>
+  

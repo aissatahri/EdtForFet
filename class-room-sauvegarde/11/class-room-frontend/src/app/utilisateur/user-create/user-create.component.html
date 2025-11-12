@@ -1,0 +1,41 @@
+<form [formGroup]="userForm" (ngSubmit)="createUser()">
+  <div class="form-group">
+    <label for="nom">Nom</label>
+    <input id="nom" formControlName="nom" type="text" class="form-control" placeholder="Nom" />
+  </div>
+  <div class="form-group">
+    <label for="prenom">Prénom</label>
+    <input id="prenom" formControlName="prenom" type="text" class="form-control" placeholder="Prénom" />
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input id="email" formControlName="email" type="email" class="form-control" placeholder="Email" />
+  </div>
+  <div class="form-group">
+    <label for="dateDeNaissance">Date de Naissance</label>
+    <input id="dateDeNaissance" formControlName="dateDeNaissance" type="date" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="motDePasse">Mot de Passe</label>
+    <input id="motDePasse" formControlName="motDePasse" type="password" class="form-control" placeholder="Mot de Passe" />
+  </div>
+  <button type="submit" class="btn btn-primary">Créer Utilisateur</button>
+</form>
+
+<!-- Modal de succès -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Succès</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Utilisateur créé avec succès !
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

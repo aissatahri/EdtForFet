@@ -1,0 +1,49 @@
+<div *ngIf="devoirsParPeriode.size > 0; else noDevoirs">
+  <h3>{{ 'DEVOIRS.TITLE' | translate }}</h3>
+  <table class="table table-striped">
+    <tbody>
+      <!-- Itérer sur les périodes -->
+      <ng-container *ngFor="let periode of periodeKeys">
+        <!-- Ligne avec le nom de la période -->
+        <tr>
+          <td colspan="3" class="font-weight-bold text-center">{{ periode }}</td>
+        </tr>
+
+        <!-- En-têtes pour les devoirs de cette période -->
+        <tr>
+          <th>{{ 'DEVOIRS.DATE' | translate }}</th>
+          <th>{{ 'DEVOIRS.DEVOIR' | translate }}</th>
+          <th>{{ 'DEVOIRS.NOTE' | translate }}</th>
+        </tr>
+
+        <!-- Itérer sur les devoirs associés à la période -->
+        <ng-container *ngFor="let devoirEleve of devoirsParPeriode.get(periode)">
+          <tr>
+            <!-- Date de passage -->
+            <td *ngIf="devoirEleve?.datePassage && devoirEleve?.heurePassage; else pasDePeriode">
+              {{ devoirEleve.datePassage | date: 'yyyy-MM-dd' }} à {{ devoirEleve.heurePassage }}
+            </td>
+
+            <!-- Si pas de date/heure de passage définie -->
+            <ng-template #pasDePeriode>
+              <td>{{ 'DEVOIRS.NON_DEFINI' | translate }}</td>
+            </ng-template>
+
+            <!-- Colonne Devoir -->
+            <td>{{ devoirEleve?.devoir?.libelle || ('DEVOIRS.DEVOIR_NON_DEFINI' | translate) }}</td>
+
+            <!-- Colonne Note -->
+            <td>
+              <span *ngIf="devoirEleve?.note !== null">{{ devoirEleve?.note }}</span>
+              <span *ngIf="devoirEleve?.note === null">{{ 'DEVOIRS.PAS_ENCORE_NOTE' | translate }}</span>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #noDevoirs>
+  <p>{{ 'DEVOIRS.AUCUN_DEVOIR' | translate }}</p>
+</ng-template>

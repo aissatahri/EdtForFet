@@ -1,0 +1,90 @@
+<div class="login-container reverse-layout">
+  <div class="login-columns">
+    <!-- Colonne pour le formulaire de connexion -->
+    <div class="form-column">
+      <!-- Logo -->
+      <div>
+        <img src="/assets/images/ministry-logo-ar.png" alt="Ministry Logo" class="ministry-logo" />
+      </div>
+
+      <!-- Formulaire de connexion -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Email Input -->
+        <div class="form-group">
+          <label for="emailLogin">{{ 'LOGIN.EMAIL' | translate }}</label>
+          <input id="emailLogin" formControlName="username" type="email" class="form-control" autocomplete="username" />
+          <div *ngIf="f['username'].errors?.['required'] && f['username'].touched" class="error-message">
+            L'email est requis
+          </div>
+          <div *ngIf="f['username'].errors?.['email'] && f['username'].touched" class="error-message">
+            L'email est invalide
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="form-group">
+          <label for="passwordLogin">{{ 'LOGIN.PASSWORD' | translate }}</label>
+          <input id="passwordLogin" formControlName="password" type="password" class="form-control" autocomplete="current-password" />
+          <div *ngIf="f['password'].errors?.['required'] && f['password'].touched" class="error-message">
+            Le mot de passe est requis
+          </div>
+          <div *ngIf="f['password'].errors?.['minlength'] && f['password'].touched" class="error-message">
+            Le mot de passe doit contenir au moins 4 caractères
+          </div>
+        </div>
+
+        <!-- Select for Etablissement -->
+        <div class="form-group">
+          <label for="etablissement">{{ 'LOGIN.ETABLISSEMENT' | translate }}</label>
+          <select id="etablissement" formControlName="etablissement" class="form-control">
+            <option value="">{{'LOGIN.SELECT_ETABLISSEMENT'|translate}}</option>
+            <option *ngFor="let etablissement of establishments$ | async" [value]="etablissement.idEtablissement">
+              {{ etablissement.libelle }}
+            </option>
+          </select>
+          <div *ngIf="f['etablissement'].errors?.['required'] && f['etablissement'].touched" class="error-message">
+            {{'LOGIN.ESTABLISHMENT_REQUIRED' | translate}}
+          </div>
+        </div>
+
+        <!-- Select for Annee Scolaire -->
+        <div class="form-group">
+          <label for="anneeScolaire">{{ 'LOGIN.ANNEE_SCOLAIRE' | translate }}</label>
+          <select id="anneeScolaire" formControlName="anneeScolaire" class="form-control">
+            <option value="">{{'LOGIN.SELECT_ANNEE_SCOLAIRE'|translate}}</option>
+            <option *ngFor="let anneeScolaire of academicYears$ | async" [value]="anneeScolaire.idAnneeScolaire">
+              {{ anneeScolaire.libelle }}
+            </option>
+          </select>
+          <div *ngIf="f['anneeScolaire'].errors?.['required'] && f['anneeScolaire'].touched" class="error-message">
+            {{'LOGIN.SCHOOL_YEAR_REQUIRED' | translate}}
+          </div>
+        </div>
+
+        <!-- Submit Button for login -->
+        <button type="submit" class="submit-button">{{ 'LOGIN.SUBMIT' | translate }}</button>
+
+        <!-- Formulaire ou bouton séparé pour créer un profil -->
+        <div class="create-profile-container">
+          <button type="button" class="create-profile-button" (click)="goToCreateProfile()">{{'LOGIN.PROFIL' | translate}}</button>
+          <app-modal></app-modal>
+        </div>
+
+        <!-- Login Error -->
+        <div *ngIf="loginError" class="error-message">{{ loginError }}</div>
+      </form>
+
+      <!-- Liens de langue -->
+      <div class="language-links">
+        <a (click)="changeLanguage('ar')" class="language-link">{{ 'LOGIN.ARABE' | translate}}</a>
+        <span class="separator"> | </span>
+        <a (click)="changeLanguage('fr')" class="language-link">{{ 'LOGIN.FRANCAIS' | translate}}</a>
+      </div>
+    </div>
+
+    <!-- Colonne pour l'image -->
+    <div class="image-column">
+      <!-- Ici, vous pouvez ajouter une image si nécessaire, sinon laissez vide -->
+    </div>
+  </div>
+</div>

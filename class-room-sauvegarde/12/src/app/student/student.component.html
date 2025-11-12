@@ -1,0 +1,281 @@
+<div class="container mt-4">
+  <!-- card one -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">{{ student?.nom }}</h5>
+      <button
+        class="btn btn-custom"
+        type="button"
+        (click)="togglePanel('panelContent5')"
+      >
+        <span class="toggle-sign">{{
+          isPanelOpen("panelContent5") ? "-" : "+"
+        }}</span>
+      </button>
+    </div>
+    <div
+      id="panelContent5"
+      class="collapse"
+      [ngClass]="{ show: isPanelOpen('panelContent5') }"
+    >
+      <div class="card-body">
+        <form [formGroup]="eleveForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-8">
+              <!-- Première ligne -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="code">{{"GENERAL.CODE" | translate}}</label>
+                    <input
+                      type="text"
+                      id="code"
+                      class="form-control"
+                      formControlName="code"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="num">{{"GENERAL.NUM" | translate}}</label>
+                    <input
+                      type="number"
+                      id="num"
+                      class="form-control"
+                      formControlName="num"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Deuxième ligne -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="nom">{{"GENERAL.NAME_SURNAME" | translate}}</label>
+                    <input
+                      type="text"
+                      id="nom"
+                      class="form-control"
+                      formControlName="nom"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="dateNaissance">{{"GENERAL.DATE_OF_BIRTH" | translate}}</label>
+                    <input
+                      type="date"
+                      id="dateNaissance"
+                      class="form-control"
+                      formControlName="dateNaissance"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Troisième ligne -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="gender">{{"STUDENT.GENDER" | translate}}</label>
+                    <select
+                      id="gender"
+                      class="form-control"
+                      formControlName="gender"
+                    >
+                      <option value="">-- {{"STUDENT.GENDER" | translate}} --</option>
+                      <option value="MALE">{{"STUDENT.MALE" | translate}}</option>
+                      <option value="FEMALE">{{"STUDENT.FEMALE" | translate}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="classe">{{'GENERAL.CLASS' | translate}}</label>
+                    <input
+                      type="text"
+                      id="classe"
+                      class="form-control"
+                      formControlName="classe"
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quatrième ligne: Sous-classe (Affichée seulement si une sous-classe est disponible) -->
+              <div
+                class="row mb-3"
+                *ngIf="
+                  eleveForm.get('sousClasse')?.value &&
+                  eleveForm.get('sousClasse')?.value.trim() !== ''
+                "
+              >
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="sousClasse">{{'GENERAL.SUBCLASS' | translate}}</label>
+                    <input
+                      type="text"
+                      id="sousClasse"
+                      class="form-control"
+                      formControlName="sousClasse"
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Section droite: Image et contrôle -->
+            <div class="col-md-4">
+              <!-- Contrôle de l'image -->
+              <div class="form-group">
+                <label for="photo">{{"STUDENT.PHOTO" | translate}}</label>
+                <input
+                  type="file"
+                  id="photo"
+                  class="form-control"
+                  formControlName="photo"
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+
+              <!-- Aperçu de l'image -->
+              <div class="form-group mt-3">
+                <label>{{"STUDENT.PHOTO_PREVIEW" | translate}}</label>
+                <div *ngIf="imageUrl">
+                  <img
+                    [src]="imageUrl"
+                    alt="Student Image"
+                    class="img-thumbnail rounded-circle"
+                    style="max-width: 100%; height: auto"
+                  />
+                </div>
+                <div *ngIf="!imageUrl">
+                  <img
+                    src="assets/images/user.png"
+                    alt="Default Avatar"
+                    class="img-thumbnail rounded-circle"
+                    style="max-width: 100%; height: auto"
+                  />
+                </div>
+              </div>
+
+              <!-- Bouton Supprimer l'image -->
+              <div
+                *ngIf="imageUrl && imageUrl !== defaultAvatarUrl"
+                class="mt-2"
+              >
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="removeImage()"
+                >
+                {{"STUDENT.REMOVE_PHOTO" | translate}}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bouton de soumission -->
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!eleveForm.valid || !eleveForm.dirty"
+          >
+          {{'STUDENT.SUBMIT' | translate}}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mt-3 d-flex justify-content-between">
+  <button
+    class="btn btn-secondary"
+    (click)="previousStudent()"
+    [disabled]="currentIndex === 0"
+  >
+  {{'STUDENT.PREVIOUS' | translate}}
+  </button>
+  <button
+    class="btn btn-secondary"
+    (click)="nextStudent()"
+    [disabled]="currentIndex === studentsList.length - 1"
+  >
+    {{'STUDENT.NEXT' | translate}}
+  </button>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Absence Card -->
+      <div class="mt-4">
+        <div class="card">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <h5 class="mb-0">{{'NOTE.TITLE' | translate}}</h5>
+            <button
+              class="btn btn-custom"
+              type="button"
+              (click)="togglePanel('panelContent6')"
+            >
+              <span class="toggle-sign">{{
+                isPanelOpen("panelContent6") ? "-" : "+"
+              }}</span>
+            </button>
+          </div>
+          <div
+            id="panelContent6"
+            class="collapse"
+            [ngClass]="{ show: isPanelOpen('panelContent6') }"
+          >
+            <div class="card-body">
+              <app-note-student
+                *ngIf="student?.idEleve"
+                [idEleve]="student?.idEleve!"
+              ></app-note-student>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <!-- Note Card -->
+      <div class="mt-4">
+        <div class="card">
+          <div
+            class="card-header d-flex justify-content-between align-items-center"
+          >
+            <h5 class="mb-0">{{'ABSENCES.TITLE' | translate}}</h5>
+            <button
+              class="btn btn-custom"
+              type="button"
+              (click)="togglePanel('panelContent7')"
+            >
+              <span class="toggle-sign">
+                {{ isPanelOpen("panelContent7") ? "-" : "+" }}
+              </span>
+            </button>
+          </div>
+          <div
+            id="panelContent7"
+            class="collapse"
+            [ngClass]="{ show: isPanelOpen('panelContent7') }"
+          >
+            <div class="card-body">
+              <!-- Attendre que l'ID soit disponible avant de rendre le composant -->
+              <app-absence-student
+                *ngIf="student?.idEleve"
+                [idEleve]="student?.idEleve!"
+              ></app-absence-student>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

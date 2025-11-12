@@ -1,0 +1,138 @@
+<div class="container">
+  <h2>Gestion des Devoirs</h2>
+
+  <!-- Formulaire pour ajouter un devoir -->
+  <form [formGroup]="devoirForm" (ngSubmit)="onSubmit()">
+    <div class="row mb-3">
+      <!-- ComboBox pour sélectionner la période -->
+      <div class="col-md-4">
+        <label for="periode">Période:</label>
+        <select id="periode" formControlName="periode" class="form-select" required (change)="onPeriodeChange()">
+            <option value="">-- Sélectionnez une période --</option>
+            <option *ngFor="let periode of periodes$ | async" [value]="periode.idPeriode">
+              {{ periode.libelle }}
+            </option>
+            <option value="all">Tous les Devoirs</option>
+          </select>
+          
+      </div>
+
+      <!-- Libellé du devoir -->
+      <div class="col-md-4">
+        <label for="libelle">Libellé:</label>
+        <input
+          id="libelle"
+          type="text"
+          formControlName="libelle"
+          class="form-control"
+          placeholder="Libellé du devoir"
+          required
+        />
+      </div>
+
+      <!-- Type de devoir -->
+      <div class="col-md-4">
+        <label for="type">Type:</label>
+        <select id="type" formControlName="type" class="form-select" required>
+          <option [value]="'Control'">Control</option>
+          <option [value]="'Activity'">Activity</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Coefficient du devoir -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="coefficient">Coefficient:</label>
+        <input
+          id="coefficient"
+          type="number"
+          formControlName="coefficient"
+          class="form-control"
+          placeholder="Coefficient"
+          required
+        />
+      </div>
+
+      <!-- Bouton pour soumettre le formulaire -->
+      <div class="col-md-4 align-self-end">
+        <button type="submit" class="btn btn-primary">
+          {{ isEditing ? 'Modifier' : 'Ajouter' }}
+        </button>
+        <button *ngIf="isEditing" type="button" class="btn btn-secondary ms-2" (click)="resetForm()">
+          Annuler
+        </button>
+      </div>
+      
+    </div>
+  </form>
+
+  <!-- Table pour afficher la liste des devoirs -->
+  <table class="table table-bordered mt-4">
+    <thead class="table-dark">
+      <tr>
+        <th>Libellé</th>
+        <th>Type</th>
+        <th>Coefficient</th>
+        <th>Période</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let devoir of devoirs$ | async">
+        <td>{{ devoir.libelle }}</td>
+        <td>{{ devoir.type }}</td>
+        <td>{{ devoir.coefficient }}</td>
+        <td>{{ devoir.periode?.libelle }}</td>
+        <td class="text-center">
+          <!-- Bouton pour éditer -->
+          <button
+            class="btn btn-warning btn-sm me-2"
+            (click)="editDevoir(devoir)"
+          >
+            Modifier
+          </button>
+
+          <!-- Bouton pour supprimer -->
+          <button
+            class="btn btn-danger btn-sm"
+            (click)="confirmDelete(devoir)"
+          >
+            Supprimer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  
+  <!-- Modal de succès pour la création ou la mise à jour -->
+  <ng-template #successModalDevoir let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Succès</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      {{ successMessage }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="modal.close()">OK</button>
+    </div>
+  </ng-template>
+
+  <!-- Modal de confirmation de suppression -->
+  <ng-template #confirmDeleteModalDevoir let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      Êtes-vous sûr de vouloir supprimer ce doivoir ?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+      <button type="button" class="btn btn-danger" (click)="deleteDevoir(); modal.dismiss()">Supprimer</button>
+    </div>
+  </ng-template>
+</div>

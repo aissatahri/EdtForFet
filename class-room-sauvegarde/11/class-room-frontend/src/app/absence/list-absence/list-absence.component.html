@@ -1,0 +1,168 @@
+<div class="container mt-4">
+  <div *ngIf="selectedAbsence" class="mt-4">
+    <h3>{{'ABSENCES.MODIFIE' | translate}}</h3>
+    <form (ngSubmit)="updateAbsence()">
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label>{{'CLASS_MANAGEMENT.PERIODE' | translate}}</label>
+          <select
+            class="form-control"
+            [ngModel]="selectedAbsence.periode?.idPeriode!"
+            name="period"
+          >
+            <option
+              *ngFor="let periode of periodes"
+              [value]="periode.idPeriode"
+            >
+              {{ periode.libelle }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label>{{'STUDENT.NAME' | translate}}</label>
+          <input
+            type="Nom"
+            class="form-control"
+            [ngModel]="selectedAbsence.eleve?.nom"
+            name="nom"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label>{{'ABSENCES.DATE' | translate}}</label>
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="selectedAbsence.date"
+            name="date"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label>{{'NOTES.HEURE' | translate}}</label>
+          <input
+            type="time"
+            class="form-control"
+            [(ngModel)]="selectedAbsence.heure"
+            name="heure"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label>{{'ABSENCES.MOTIF' | translate}}</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="selectedAbsence.motif"
+            name="motif"
+          />
+        </div>
+
+        <!-- Add other fields as necessary -->
+        <div class="col-md-4 mt-3">
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> {{'STUDENT.SUBMIT'|translate}}
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary ms-2"
+            (click)="cancelEdit()"
+          >
+            {{'CLASS_MANAGEMENT.CANCEL'|translate}}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div>
+    <h2 class="mb-4">{{'ABSENCES.TITLE' | translate}}</h2>
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <input
+          type="date"
+          placeholder="Filtrer par date"
+          class="form-control mt-2"
+          [(ngModel)]="filterDate"
+          (ngModelChange)="filterAbsences()"
+        />
+      </div>
+      <div class="col-md-3 mb-3">
+        <select
+          class="form-control mt-2"
+          [(ngModel)]="filterClasse"
+          (ngModelChange)="filterAbsences()"
+        >
+          <option [ngValue]="null">{{'CLASS_MANAGEMENT.SELECT_CLASS' | translate}}</option>
+          <option *ngFor="let classe of classes" [ngValue]="classe.libelle">
+            {{ classe.libelle }}
+          </option>
+        </select>
+      </div>
+      
+      <div class="col-md-3 mb-3">
+        <input
+          type="text"
+          class="form-control mt-2"
+          placeholder="Filtrer par nom"
+          [(ngModel)]="filterName"
+          (ngModelChange)="filterAbsences()"
+        />
+      </div>
+      <div class="col-md-3 mb-3">
+        <select
+          class="form-control mt-2"
+          [(ngModel)]="filterPeriod"
+          (change)="loadAbsences()"
+        >
+          <option [ngValue]="null">{{'SEARCH.SELECT_PERIOD' | translate}}</option>
+          <option *ngFor="let periode of periodes" [ngValue]="periode.idPeriode">
+            {{ periode.libelle }}
+          </option>
+        </select>
+      </div>
+      
+    </div>
+
+    <table class="table table-striped table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>{{'STUDENT.NUM' | translate}}</th>
+          <th>{{'STUDENT.NAME' | translate}}</th>
+          <th>{{'GENERAL.CLASS' | translate}}</th> <!-- Nouvelle colonne pour la classe -->
+          <th>{{'ABSENCES.DATE' | translate}}</th>
+          <th>{{'NOTES.HEURE' | translate}}</th>
+          <th>{{'ABSENCES.MOTIF' | translate}}</th>
+          <th>{{'CLASS_MANAGEMENT.PERIODE' | translate}}</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let absence of filteredAbsences">
+          <td>{{ absence.eleve?.num }}</td>
+          <td>{{ absence.eleve?.nom }}</td>
+          <td>{{ absence.classeEleve?.classe?.libelle}}</td> <!-- Classe de l'élève -->
+          <td>{{ absence.date }}</td>
+          <td>{{ absence.heure }}</td>
+          <td>{{ absence.motif}}</td>
+          <td>{{ absence.periode?.libelle }}</td>
+          <td>
+            <button
+              class="btn btn-warning btn-sm"
+              (click)="editAbsence(absence.idAbsence!)"
+            >
+              <i class="fas fa-edit"></i>
+              {{"CLASS_MANAGEMENT.EDIT"|translate}}
+            </button>
+            <button
+              class="btn btn-danger btn-sm ms-2"
+              (click)="deleteAbsence(absence.idAbsence!)"
+            >
+              <i class="fas fa-trash"></i> {{'GENERAL.DELETE' | translate}}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="professeur-container">
+    <h2>Détails du Professeur</h2>
+    <form [formGroup]="professeurForm">
+        <div class="row align-items-end">
+            <div class="col-md-3 mb-3">
+                <div class="form-group">
+                    <label for="nom">{{ 'PROFESSEUR.NOM' | translate }}</label>
+                    <input id="nom" formControlName="nom" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="form-group">
+                    <label for="prenom">{{ 'PROFESSEUR.PRENOM' | translate }}</label>
+                    <input id="prenom" formControlName="prenom" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="form-group">
+                    <label for="email">{{ 'PROFESSEUR.EMAIL' | translate }}</label>
+                    <input id="email" formControlName="email" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="form-group">
+                    <label for="dateDeNaissance">{{ 'PROFESSEUR.DATE_DE_NAISSANCE' | translate }}</label>
+                    <input id="dateDeNaissance" type="date" formControlName="dateDeNaissance" class="form-control" placeholder="dd/mm/yyyy" />
+                 </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary me-2" (click)="onSubmit()"><i class="fas fa-edit"></i> {{ 'PROFESSEUR.MODIFIER' | translate }}</button>
+    </form>
+
+    <table class="table table-striped table-bordered table-hover" *ngIf="professeur">
+        <thead class="table-dark">
+            <tr>
+                <th>{{ 'PROFESSEUR.NOM' | translate }}</th>
+                <th>{{ 'PROFESSEUR.PRENOM' | translate }}</th>
+                <th>{{ 'PROFESSEUR.EMAIL' | translate }}</th>
+                <th>{{ 'PROFESSEUR.DATE_DE_NAISSANCE' | translate }}</th>
+                <th>{{ 'PROFESSEUR.ACTIONS' | translate }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ professeur.nom }}</td>
+                <td>{{ professeur.prenom }}</td>
+                <td>{{ professeur.utilisateurDto?.email }}</td>
+                <td>{{ professeur.utilisateurDto?.dateDeNaissance | date: 'dd/MM/yyyy' }}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm me-2" (click)="editProfesseurById(professeur.idProfesseur!)">
+                        <i class="fas fa-edit"></i> {{ 'PROFESSEUR.MODIFIER' | translate }}
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteProfesseur(professeur.idProfesseur!)">
+                        <i class="fas fa-trash-alt"></i> {{ 'PROFESSEUR.DELETE' | translate }}
+                    </button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!professeur">{{ 'PROFESSEUR.AUCUN_PROFESSEUR' | translate }}</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="successModalProf" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">{{ 'PROFESSEUR.SUCCESS' | translate }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ 'PROFESSEUR.SUCCES_MESSAGE' | translate }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'PROFESSEUR.CLOSE' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>

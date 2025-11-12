@@ -1,0 +1,248 @@
+<div class="container">
+  <button class="btn btn-primary mb-3" (click)="addPeriode()">
+    Ajouter une Période
+  </button>
+
+  <!-- Formulaire principal -->
+  <form [formGroup]="periodeForm" (ngSubmit)="onSubmit()">
+    <div formArrayName="periodes">
+      <div
+        *ngFor="let periode of periodes.controls; let i = index"
+        [formGroupName]="i"
+        class="mb-3"
+      >
+        <div class="row g-3 align-items-center">
+          <div class="col-md-2">
+            <label for="libelle-{{ i }}">Libellé:</label>
+            <input
+              id="libelle-{{ i }}"
+              formControlName="libelle"
+              type="text"
+              class="form-control"
+              placeholder="Libellé"
+              required
+            />
+          </div>
+          <div class="col-md-2">
+            <label for="dateDebut-{{ i }}">Date de Début:</label>
+            <input
+              id="dateDebut-{{ i }}"
+              formControlName="dateDebut"
+              type="date"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-2">
+            <label for="dateFin-{{ i }}">Date de Fin:</label>
+            <input
+              id="dateFin-{{ i }}"
+              formControlName="dateFin"
+              type="date"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-2">
+            <label for="nombreDevoir-{{ i }}">Nombre de Devoirs:</label>
+            <input
+              id="nombreDevoir-{{ i }}"
+              formControlName="nombreDevoir"
+              type="number"
+              min="0"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-2">
+            <label for="coefDevoir-{{ i }}">Coef DS (%)</label>
+            <input
+              id="coefDevoir-{{ i }}"
+              formControlName="coefDevoir"
+              type="number"
+              min="0"
+              class="form-control"
+              placeholder="Ex: 50"
+              required
+            />
+          </div>
+          <div class="col-md-2">
+            <div class="form-check d-flex align-items-center">
+              <input
+                id="activity-{{ i }}"
+                formControlName="isActivity"
+                type="checkbox"
+                class="form-check-input me-2"
+                (change)="toggleCoefActivity(i)"
+              />
+              <label for="activity-{{ i }}" class="form-check-label me-2"
+                >Activity</label
+              >
+              <input
+                id="coefActivity-{{ i }}"
+                formControlName="coefActivity"
+                type="number"
+                min="0"
+                class="form-control"
+                placeholder="Ex: 30"
+                [disabled]="!periode.get('isActivity')?.value"
+              />
+            </div>
+          </div>
+          <div class="col-md-2 d-flex align-items-center">
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              (click)="removePeriode(i)"
+            >
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Soumettre</button>
+  </form>
+
+  <!-- Table de visualisation des périodes -->
+  <div class="mt-2">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Libellé</th>
+          <th>Date de Début</th>
+          <th>Date de Fin</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let periode of periodes$ | async; let i = index">
+          <td>{{ periode.libelle }}</td>
+          <td>{{ periode.dateDebut }}</td>
+          <td>{{ periode.dateFin }}</td>
+          <td class="text-center">
+            <button
+              class="btn btn-warning btn-sm me-2"
+              (click)="editPeriode(periode)"
+            >
+              <i class="fas fa-edit"></i> Éditer
+            </button>
+            <button
+              class="btn btn-danger btn-sm me-2"
+              (click)="confirmDeletePeriode(periode)"
+            >
+              <i class="fas fa-trash"></i> Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Formulaire de mise à jour -->
+  <div *ngIf="isEditing" class="mt-4">
+    <h4>Mise à jour de la période</h4>
+    <form [formGroup]="editForm" (ngSubmit)="onUpdate()">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-3 mb-3">
+          <label>Libellé:</label>
+          <input
+            formControlName="libelle"
+            type="text"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label>Date de Début:</label>
+          <input
+            formControlName="dateDebut"
+            type="date"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label>Date de Fin:</label>
+          <input
+            formControlName="dateFin"
+            type="date"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="col-md-3 mb-3">
+          <button type="submit" class="btn btn-success">Modifier</button>
+        </div>
+        <div class="col-md-2 mb-3">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelEdit()"
+          >
+            Annuler
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <button
+    class="btn btn-primary mb-3"
+    (click)="toggleDevoir()"
+    [attr.aria-expanded]="showDevoir"
+  >
+    {{ showDevoir ? "Cacher Devoir" : "Afficher Devoir" }}
+  </button>
+  <!-- Conditionally display the app-devoir component using Bootstrap's collapse feature -->
+  <div *ngIf="showDevoir">
+    <app-devoir></app-devoir>
+  </div>
+
+  <!-- Modal de succès -->
+  <ng-template #successModalPeriode let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Succès</h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modal.dismiss()"
+      ></button>
+    </div>
+    <div class="modal-body">{{ successMessage }}</div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="modal.close()">
+        OK
+      </button>
+    </div>
+  </ng-template>
+
+  <!-- Modal de confirmation de suppression -->
+  <ng-template #confirmDeleteModalPeriode let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
+      <button
+        type="button"
+        class="btn-close"
+        (click)="modal.dismiss()"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      Êtes-vous sûr de vouloir supprimer cette période ?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+        Annuler
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="deletePeriode(); modal.dismiss()"
+      >
+        Supprimer
+      </button>
+    </div>
+  </ng-template>
+</div>

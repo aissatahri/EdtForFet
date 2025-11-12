@@ -1,0 +1,106 @@
+/* Conteneur principal */
+.login-container {
+    height: 100vh; /* 100% de la hauteur de la fenêtre */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
+  
+  /* Colonnes du layout */
+  .login-columns {
+    display: flex;
+    width: 100%; /* Utilise toute la largeur de la page */
+    height: 100%; /* Utilise toute la hauteur de la page */
+  }
+  
+  /* Colonne de l'image */
+  .image-column {
+    flex: 2; /* Prend 2/3 de l'espace */
+    background-image: url('/assets/images/crs.png'); /* Chemin relatif à l'image */
+    background-size: cover; /* Adapte l'image à la taille du conteneur */
+    background-position: center; /* Centre l'image */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+  }
+  
+ 
+
+  /* Colonne du formulaire */
+.form-column {
+    flex: 1; /* Prend 1/3 de l'espace */
+    padding: 0; /* Supprime le padding supérieur pour éviter l'espace vide */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre horizontalement le formulaire */
+    max-width: 500px;
+}
+  
+  /* Formulaire */
+.login-form {
+  max-width: 400px; /* Augmenter la largeur maximale du formulaire */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Légère ombre pour le design */
+  width: 100%; /* Assure que le formulaire prend toute la largeur possible dans son conteneur */
+}
+
+  
+  /* Bouton de soumission */
+  .submit-button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Nouveau bouton "Créer un profil" */
+  .create-profile-button {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #28a745; /* Vert pour différencier du bouton de connexion */
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
+  }
+  
+  .create-profile-button:hover {
+    background-color: #218838;
+  }
+  /* Styles pour l'image du logo */
+.ministry-logo {
+  max-width: 100%; /* S'assure que l'image ne dépasse pas la largeur de son conteneur */
+  height: auto; /* Conserve le ratio d'aspect de l'image */
+  padding: 20px; /* Espace autour de l'image */
+}
+/* Styles pour les liens de langue */
+.language-links {
+  margin-top: 20px; /* Espacement au-dessus des liens */
+  text-align: center; /* Centrer les liens */
+}
+
+.language-link {
+  color: #007bff; /* Couleur du texte du lien */
+  text-decoration: underline; /* Souligner le texte */
+  cursor: pointer; /* Curseur en forme de main */
+  margin: 0 5px; /* Espacement entre les liens */
+}
+
+.language-link:hover {
+  color: #0056b3; /* Couleur au survol */
+}
+
+.separator {
+  font-weight: bold; /* Style le séparateur */
+}

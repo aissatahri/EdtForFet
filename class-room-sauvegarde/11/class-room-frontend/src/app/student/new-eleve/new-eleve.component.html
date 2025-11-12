@@ -1,0 +1,132 @@
+<div class="card">
+    <div class="card-header">
+      <h5>{{'STUDENT.ADD_STUDENT'|translate}}</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="eleveForm" (ngSubmit)="onSubmit()" class="form-row">
+        <div class="row">
+          <!-- Première colonne -->
+          <div class="col-md-4">
+            <!-- Sélection du niveau -->
+            <div class="form-group">
+              <label for="niveau">{{'STUDENT.LEVEL' | translate}}</label>
+              <select id="niveau" class="form-control" formControlName="niveau" (change)="onNiveauChange($event)">
+                <option value="">-- {{'CLASS_MANAGEMENT.SELECT_LEVEL' | translate}} --</option>
+                <option *ngFor="let niveau of niveaux$ | async" [value]="niveau.idNiveau">
+                  {{ niveau.libelle }}
+                </option>
+              </select>
+            </div>
+  
+            <!-- Sélection de la classe -->
+            <div class="form-group">
+              <label for="classe">{{'GENERAL.CLASS' | translate}}</label>
+              <select id="classe" class="form-control" formControlName="classe" (change)="onClasseChange($event)" [disabled]="!classes || classes.length === 0">
+                <option value="">-- {{'CLASS_MANAGEMENT.SELECT_CLASS' | translate}} --</option>
+                <option *ngFor="let classe of classes" [value]="classe.idClasse">
+                  {{ classe.libelle }}
+                </option>
+              </select>
+            </div>
+  
+            <!-- Sélection de la Sous classe -->
+            <div class="form-group" *ngIf="hasSousClasses">
+              <label for="classe">{{'GENERAL.SUBCLASS' | translate}}</label>
+              <select id="sousClasse" class="form-control" formControlName="sousClasse" [disabled]="!classes || classes.length === 0" (change)="onSousClasseChange($event)">
+                <option value="">-- {{'CLASS_MANAGEMENT.SELECT_SOUS_CLASS' | translate}} --</option>
+                <option *ngFor="let sousclasse of sousClasses" [value]="sousclasse.idSousClasse">
+                  {{ sousclasse.libelle }}
+                </option>
+              </select>
+            </div>
+          </div>
+  
+          <div class="col-md-4">
+            <!-- Champ pour le code -->
+            <div class="form-group">
+              <label for="code">{{"GENERAL.CODE" | translate}}</label>
+              <input type="text" id="code" formControlName="code" class="form-control" />
+            </div>
+  
+            <!-- Champ pour le numéro -->
+            <div class="form-group">
+              <label for="num">{{"GENERAL.NUM" | translate}}</label>
+              <input type="number" id="num" formControlName="num" class="form-control" />
+            </div>
+  
+            <!-- Champ pour le nom -->
+            <div class="form-group">
+              <label for="nom">{{"GENERAL.NAME_SURNAME" | translate}}</label>
+              <input type="text" id="nom" formControlName="nom" class="form-control" />
+            </div>
+  
+            <!-- Champ pour la date de naissance -->
+            <div class="form-group">
+              <label for="dateNaissance">{{"GENERAL.DATE_OF_BIRTH" | translate}}</label>
+              <input type="date" id="dateNaissance" formControlName="dateNaissance" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label for="gender">{{"STUDENT.GENDER" | translate}}</label>
+              <select
+                id="gender"
+                class="form-control"
+                formControlName="gender"
+              >
+                <option value="">-- {{"STUDENT.GENDER" | translate}} --</option>
+                <option value="MALE">{{"STUDENT.MALE" | translate}}</option>
+                <option value="FEMALE">{{"STUDENT.FEMALE" | translate}}</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Troisième colonne (Gestion de la photo) -->
+          <div class="col-md-4">
+            <!-- Contrôle de l'image -->
+            <div class="form-group">
+              <label for="photo">{{"STUDENT.PHOTO" | translate}}</label>
+              <input type="file" id="photo" class="form-control" formControlName="photo" (change)="onFileSelected($event)" />
+            </div>
+  
+            <!-- Aperçu de l'image -->
+            <div class="form-group mt-3">
+              <label>{{"STUDENT.PHOTO_PREVIEW" | translate}}</label>
+              <div *ngIf="photoUrl">
+                <img [src]="photoUrl" alt="Student Image" class="img-thumbnail rounded-circle" style="max-width: 150px; height: 150px" />
+              </div>
+              <div *ngIf="!photoUrl">
+                <img src="assets/images/user.png" alt="Default Avatar" class="img-thumbnail rounded-circle" style="max-width: 150px; height: 150px" />
+              </div>
+            </div>
+  
+            <!-- Bouton Supprimer l'image -->
+            <div *ngIf="photoUrl && imageUrl !== defaultAvatarUrl" class="mt-2">
+              <button type="button" class="btn btn-danger" (click)="removePhoto()">{{"STUDENT.REMOVE_PHOTO" | translate}}</button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Bouton de soumission -->
+        <button type="submit" class="btn btn-primary" [disabled]="!eleveForm.valid || !eleveForm.dirty">
+          {{'STUDENT.SUBMIT' | translate}}
+        </button>
+      </form>
+    </div>
+  </div>
+
+<div class="modal fade" #successModal tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Succès</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{'STUDENT_SUCCESS' | translate}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{'STUDENT_CLOSE'|translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

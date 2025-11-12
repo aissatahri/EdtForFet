@@ -1,0 +1,53 @@
+.table {
+  margin: 20px 0;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  text-align: center;
+}
+
+.table thead {
+  background-color: #007bff; /* Couleur d'arrière-plan pour l'en-tête du tableau */
+  color: #fff; /* Couleur du texte pour l'en-tête du tableau */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9; /* Couleur de fond des lignes impaires */
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1; /* Couleur de fond au survol */
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6; /* Bordure autour du tableau */
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #dee2e6; /* Bordure autour des cellules */
+}
+
+.table td,
+.table th {
+  padding: 0.75rem; /* Espacement dans les cellules */
+}
+
+.row.align-items-end {
+  align-items: flex-end; /* Aligne les éléments de la ligne en bas */
+}
+
+.form-control {
+  margin-bottom: 0; /* Évite l'espacement en bas des champs de saisie */
+}
+
+.btn-group {
+  display: flex;
+}
+
+.btn {
+  margin-top: 0; /* Assure que les boutons sont alignés avec les champs de saisie */
+}

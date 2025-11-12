@@ -1,0 +1,41 @@
+<form [formGroup]="professorForm" (ngSubmit)="createProfessor()">
+  <div class="form-group">
+    <label for="professorName">Nom du Professeur</label>
+    <input id="professorName" formControlName="nom" type="text" class="form-control" placeholder="Nom du Professeur" />
+  </div>
+
+  <div class="form-group">
+    <label for="professorPrenom">Prénom du Professeur</label>
+    <input id="professorPrenom" formControlName="prenom" type="text" class="form-control" placeholder="Prénom du Professeur" />
+  </div>
+
+  <div class="form-group">
+    <label for="utilisateur">Sélectionner un utilisateur</label>
+    <select id="utilisateur" formControlName="utilisateurId" class="form-control">
+      <option value="">-- Sélectionner un utilisateur --</option>
+      <option *ngFor="let utilisateur of utilisateurs" [value]="utilisateur.id">
+        {{ utilisateur.nom }} {{ utilisateur.prenom }}
+      </option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary mt-3">Créer Professeur</button>
+</form>
+
+<!-- Modal de succès -->
+<div class="modal fade" id="successModalProf" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalProfLabel">Succès</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Professeur créé avec succès !
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>

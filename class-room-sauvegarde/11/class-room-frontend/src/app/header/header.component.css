@@ -1,0 +1,87 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #007bff; /* Couleur de fond */
+  color: white;
+  height: 60px; /* Hauteur fixe de l'en-tête */
+  width: 100%; /* Assure que l'en-tête occupe toute la largeur disponible */
+  box-sizing: border-box; /* Inclut le padding et les bordures dans la largeur totale */
+}
+
+.header-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between; /* Distribue l'espace entre les sections gauche, centre et droite */
+}
+
+.left-section,
+.center-section,
+.right-section {
+  display: flex;
+  align-items: center;
+}
+
+.left-section {
+  flex: 1; /* Occupe une partie de l'espace total */
+}
+
+.center-section {
+  flex: 2; /* Occupe une plus grande partie de l'espace total */
+  justify-content: center; /* Centre les éléments dans cette section */
+}
+
+.right-section {
+  flex: 1; /* Occupe une partie de l'espace total */
+  justify-content: flex-end; /* Aligne les éléments à droite */
+}
+
+.logo {
+  height: 40px; /* Ajustez la taille du logo */
+  margin-right: 10px; /* Espace entre le logo et le titre */
+}
+
+.username,
+.etablissement,
+.annee-scolaire,
+.datetime {
+  margin-left: 10px; /* Espace entre les éléments */
+}
+
+.separator {
+  margin: 0 10px; /* Espacement autour du séparateur */
+  color: #d1d1d1; /* Couleur du séparateur */
+}
+
+/* Optionnel: pour aligner le texte et ajouter du style */
+.username,
+.etablissement,
+.annee-scolaire,
+.datetime {
+  font-size: 16px; /* Taille de police pour les éléments de texte */
+}
+
+.username {
+  font-weight: bold; /* Met le nom d'utilisateur en gras */
+}
+
+.datetime {
+  font-size: 14px; /* Taille de police plus petite pour la date et l'heure */
+}
+.logout-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin-left: 20px;
+  color: #ffffff; /* White color for better contrast */
+}
+
+.logout-button:hover {
+  color: #ff6347; /* Change color on hover */
+}
+
+.error-message {
+  color: red;
+  display: block;
+}

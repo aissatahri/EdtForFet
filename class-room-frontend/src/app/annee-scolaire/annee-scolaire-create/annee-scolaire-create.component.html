@@ -1,0 +1,113 @@
+<div class="container mt-4">
+  <!-- Formulaire pour créer une année scolaire -->
+  <form [formGroup]="academicYearForm" (ngSubmit)="createAcademicYear()">
+    <!-- Champ pour le libellé -->
+    <div class="form-group">
+      <label for="libelle">Libellé</label>
+      <!-- <input
+        id="libelle"
+        formControlName="libelle"
+        type="text"
+        class="form-control"
+        placeholder="Libellé de l'année scolaire"
+        [disabled]="true" 
+      /> -->
+      <input
+        id="libelle"
+        formControlName="libell"
+        type="text"
+        class="form-control"
+        placeholder="Libellé de l'année scolaire"
+      />
+    </div>
+
+    <!-- Champ pour la date de début -->
+    <div class="form-group mt-3">
+      <label for="dateDebut">Date de début</label>
+      <input
+        id="dateDebut"
+        formControlName="dateDebut"
+        type="date"
+        class="form-control"
+      />
+      <!-- Message d'erreur si la date de début est manquante -->
+      <div
+        *ngIf="
+          academicYearForm.get('dateDebut')?.touched &&
+          academicYearForm.get('dateDebut')?.hasError('required')
+        "
+        class="text-danger"
+      >
+        La date de début est obligatoire.
+      </div>
+    </div>
+
+    <!-- Champ pour la date de fin -->
+    <div class="form-group mt-3">
+      <label for="dateFin">Date de fin</label>
+      <input
+        id="dateFin"
+        formControlName="dateFin"
+        type="date"
+        class="form-control"
+      />
+      <!-- Message d'erreur si la date de fin est manquante -->
+      <div
+        *ngIf="
+          academicYearForm.get('dateFin')?.touched &&
+          academicYearForm.get('dateFin')?.hasError('required')
+        "
+        class="text-danger"
+      >
+        La date de fin est obligatoire.
+      </div>
+      <!-- Message d'erreur si la date de fin est inférieure à la date de début -->
+      <div
+        *ngIf="
+          academicYearForm.get('dateFin')?.touched &&
+          academicYearForm.get('dateFin')?.hasError('dateFinInvalid')
+        "
+        class="text-danger"
+      >
+        La date de fin doit être supérieure à la date de début.
+      </div>
+    </div>
+
+    <!-- Bouton pour soumettre le formulaire -->
+    <button
+      type="submit"
+      class="btn btn-primary mt-4"
+      [disabled]="academicYearForm.invalid"
+    >
+      Créer Année Scolaire
+    </button>
+  </form>
+</div>
+<!-- Modal pour le succès -->
+<div
+  class="modal fade"
+  id="successModalAnnee"
+  tabindex="-1"
+  aria-labelledby="successModalAnneeLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalAnneeLabel">Succès</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Année scolaire créée avec succès.</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

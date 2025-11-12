@@ -1,0 +1,52 @@
+<!-- Modal de succès -->
+<div class="modal fade" id="successModalprofile" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Succès</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        La relation entre le professeur et l'établissement a été créée avec succès !
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Formulaire de création de relation -->
+<form [formGroup]="relationForm" (ngSubmit)="createProfessorEstablishment()" class="container mt-4">
+  <!-- Sélection du professeur -->
+  <div class="form-group">
+    <label for="professor">Sélectionner un professeur :</label>
+    <select id="professor" formControlName="professorId" class="form-control">
+      <option *ngFor="let professor of professors$ | async" [value]="professor.idProfesseur">
+        {{ professor.nom }} {{ professor.prenom }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Sélection de l'établissement -->
+  <div class="form-group mt-3">
+    <label for="establishment">Sélectionner un établissement :</label>
+    <select id="establishment" formControlName="establishmentId" class="form-control">
+      <option *ngFor="let establishment of establishments$ | async" [value]="establishment.idEtablissement">
+        {{ establishment.libelle }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Sélection de l'année scolaire -->
+  <div class="form-group mt-3">
+    <label for="academicYear">Sélectionner une année scolaire :</label>
+    <select id="academicYear" formControlName="academicYearId" class="form-control">
+      <option *ngFor="let year of academicYears$ | async" [value]="year.idAnneeScolaire">
+        {{ year.libelle }}
+      </option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary mt-3">Créer Relation</button>
+</form>

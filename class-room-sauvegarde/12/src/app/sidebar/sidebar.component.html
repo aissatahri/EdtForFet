@@ -1,0 +1,46 @@
+<nav class="sidebar">
+  <ul>
+    <li>
+      <a routerLink="/dash/home" routerLinkActive="active" [ngClass]="{'arabic': currentLang === 'ar'}">
+        <i class="fas fa-home"></i> &nbsp;
+        <span>{{ 'SIDEBAR.HOME' | translate }}</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/dash/lstEleve" routerLinkActive="active" [ngClass]="{'arabic': currentLang === 'ar'}">
+        <i class="fas fa-chalkboard"></i>&nbsp;
+        <span>{{ 'SIDEBAR.CLASS' | translate }}</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/dash/eleve" routerLinkActive="active" [ngClass]="{'arabic': currentLang === 'ar'}">
+        <i class="fas fa-user-graduate"></i> &nbsp;
+        <span>{{ 'SIDEBAR.STUDENT' | translate }}</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/dash/mark" routerLinkActive="active" [ngClass]="{'arabic': currentLang === 'ar'}">
+        <i class="fas fa-pen"></i>&nbsp;
+        <span>{{ 'SIDEBAR.MARK' | translate }}</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/dash/absence" routerLinkActive="active" [ngClass]="{'arabic': currentLang === 'ar'}">
+        <i class="fas fa-calendar-times"></i>&nbsp;
+        <span>{{ 'SIDEBAR.ABSENCE' | translate }}</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/dash/cahier-texte" routerLinkActive="active" [ngClass]="{'arabic': currentLang === 'ar'}">
+        <i class="fas fa-book"></i>&nbsp;
+        <span>{{ 'SIDEBAR.TEXT_NOTEBOOK' | translate }}</span>
+      </a>
+    </li>
+    <li>
+      <a routerLink="/dash/parametre" routerLinkActive="active" [ngClass]="{'arabic': currentLang === 'ar'}">
+        <i class="fas fa-cogs"></i>&nbsp;
+        <span>{{ 'SIDEBAR.PARAMETER' | translate }}</span>
+      </a>
+    </li>
+  </ul>
+</nav>

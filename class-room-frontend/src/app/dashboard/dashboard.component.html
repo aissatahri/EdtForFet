@@ -1,0 +1,23 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <app-sidebar class="sidebar" 
+    [ngClass]="{'left-sidebar': !isSidebarRight, 'right-sidebar': isSidebarRight, 'hidden': !isSidebarVisible}">
+  </app-sidebar>
+
+  <div class="main-content" 
+    [ngClass]="{'with-left-sidebar': !isSidebarRight && isSidebarVisible, 'with-right-sidebar': isSidebarRight && isSidebarVisible, 'shifted': !isSidebarVisible}">
+    
+    <!-- Button to toggle sidebar visibility -->
+    <button class="hamburger-btn" 
+      [ngClass]="{'left': !isSidebarRight, 'right': isSidebarRight}" 
+      (click)="toggleSidebar()">☰</button>
+
+    <!-- Header -->
+    <app-header class="header"></app-header>
+
+    <!-- Content Area -->
+    <div class="dashboard-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

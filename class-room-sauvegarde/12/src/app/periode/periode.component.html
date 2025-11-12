@@ -1,0 +1,114 @@
+<!-- Formulaire de création ou de mise à jour des périodes -->
+<div class="periode-container">
+  <h2>Gestion des Périodes</h2>
+  <form [formGroup]="periodeForm" (ngSubmit)="createOrUpdatePeriode()">
+    <div class="row align-items-end">
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label for="libelle">Libellé</label>
+          <input
+            id="libelle"
+            formControlName="libelle"
+            type="text"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label for="dateDebut">Date de Début</label>
+          <input
+            id="dateDebut"
+            formControlName="dateDebut"
+            type="date"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label for="dateFin">Date de Fin</label>
+          <input
+            id="dateFin"
+            formControlName="dateFin"
+            type="date"
+            class="form-control"
+          />
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="d-flex">
+          <button type="submit" class="btn btn-primary btn-sm me-1">
+            <i class="fas fa-plus"></i> {{ selectedPeriode ? "Update" : "Créer" }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm"
+            (click)="resetForm()"
+          >
+            <i class="fas fa-redo"></i> Réinitialiser
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- Table pour afficher les périodes -->
+  <div class="periode-list">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Libellé</th>
+          <th>Date de Début</th>
+          <th>Date de Fin</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let periode of periodes$ | async">
+          <td>{{ periode.libelle }}</td>
+          <td>{{ periode.dateDebut | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ periode.dateFin | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-center">
+            <button class="btn btn-warning btn-sm me-2" (click)="editPeriode(periode)">
+              <i class="fas fa-edit"></i> Éditer
+            </button>
+            <button class="btn btn-danger btn-sm me-2" (click)="confirmDeletePeriode(periode)">
+              <i class="fas fa-trash"></i> Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  
+
+  <!-- Modal de succès pour la création ou la mise à jour -->
+  <ng-template #successModalPeriode let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Succès</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      {{ successMessage }}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="modal.close()">OK</button>
+    </div>
+  </ng-template>
+
+  <!-- Modal de confirmation de suppression -->
+  <ng-template #confirmDeleteModalPeriode let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      Êtes-vous sûr de vouloir supprimer cette période ?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Annuler</button>
+      <button type="button" class="btn btn-danger" (click)="deletePeriode(); modal.dismiss()">Supprimer</button>
+    </div>
+  </ng-template>
+</div>

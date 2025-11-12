@@ -1,0 +1,45 @@
+/* Style pour les boutons personnalisés */
+.btn-custom {
+    background-color: transparent; /* Rendre le bouton transparent */
+    border: none; /* Retirer les bordures */
+    padding: 0; /* Supprimer le padding par défaut */
+    font-size: 1.5rem; /* Ajuster la taille du texte */
+  }
+  
+  .btn-custom .toggle-sign {
+    font-weight: bold; /* Mettre le signe en gras */
+    color: purple; /* Couleur du signe */
+  }
+  
+  .btn-custom:hover {
+    background-color: rgba(128, 0, 128, 0.1); /* Optionnel: effet de survol transparent */
+    cursor: pointer; /* Changer le curseur en pointeur */
+  }
+  /* Style pour les boutons personnalisés */
+.btn-custom {
+  background-color: transparent; /* Rendre le bouton transparent */
+  border: none; /* Retirer les bordures */
+  padding: 0; /* Supprimer le padding par défaut */
+  font-size: 1.5rem; /* Ajuster la taille du texte */
+  width: 2.5rem; /* Largeur fixe pour les boutons */
+  height: 2.5rem; /* Hauteur fixe pour les boutons */
+  display: flex; /* Utiliser Flexbox pour le centrage */
+  align-items: center; /* Centrer verticalement */
+  justify-content: center; /* Centrer horizontalement */
+  border-radius: 50%; /* Rendre les boutons ronds */
+}
+
+.btn-custom .toggle-sign {
+  font-weight: bold; /* Mettre le signe en gras */
+  color: purple; /* Couleur du signe */
+  display: inline-block; /* Pour que le contenu soit correctement centré */
+  line-height: 1; /* Ajuster la hauteur de ligne */
+}
+
+/* Optionnel: effet de survol transparent */
+.btn-custom:hover {
+  background-color: rgba(128, 0, 128, 0.1); /* Effet de survol transparent */
+  cursor: pointer; /* Changer le curseur en pointeur */
+}
+
+  

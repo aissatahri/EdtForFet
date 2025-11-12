@@ -1,0 +1,12 @@
+/* user-create.component.css */
+
+/* Ajout de marge inférieure pour les groupes de formulaire */
+.form-group {
+    margin-bottom: 1rem; /* Ajustez cette valeur selon vos besoins */
+  }
+  
+  /* Ajout de marge au bouton */
+  .btn-primary {
+    margin-top: 1rem; /* Ajoutez une marge supérieure pour séparer le bouton de l'élément précédent */
+  }
+  

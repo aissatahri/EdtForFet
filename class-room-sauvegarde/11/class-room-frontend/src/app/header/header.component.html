@@ -1,0 +1,31 @@
+<header class="header">
+  <div class="header-content">
+    <!-- Left alignment container -->
+    <div class="left-section">
+      <img src="../../assets/images/virtual.png" alt="Logo" class="logo" />
+      <h1>CRS</h1>
+    </div>
+
+    <!-- Center alignment container -->
+    <div class="center-section">
+      <span class="username">{{ username }}</span>
+      <span class="separator">|</span>
+      <span class="etablissement">{{ etablissement }}</span>
+      <span class="separator">|</span>
+      <span class="annee-scolaire">{{ anneeScolaire }}</span>
+    </div>
+
+    <!-- Right alignment container -->
+    <div class="right-section">
+      <span class="datetime"
+        >{{ currentDate | date : "fullDate" : "" : currentLang }}
+        {{ currentTime }}</span
+      >
+      <!-- Logout button as an icon -->
+      <button (click)="logout()" class="logout-button" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+        <!-- Font Awesome icon for logout -->
+      </button>
+    </div>
+  </div>
+</header>

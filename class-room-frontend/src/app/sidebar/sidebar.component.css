@@ -1,0 +1,43 @@
+/* sidebar.component.css */
+.sidebar {
+  background-color: #343a40; /* Couleur de fond de la barre latérale */
+  color: white; /* Couleur du texte */
+  height: 100%; /* Hauteur de la barre latérale */
+  padding: 20px; /* Espacement interne de la barre latérale */
+}
+
+.sidebar ul {
+  list-style-type: none; /* Supprime les puces de la liste */
+  padding: 0; /* Supprime le padding par défaut */
+}
+
+.sidebar ul li {
+  margin: 20px 0; /* Espacement vertical entre les éléments de la liste */
+}
+
+.sidebar ul li a {
+  color: white; /* Couleur du texte des liens */
+  text-decoration: none; /* Supprime le soulignement des liens */
+  display: flex; /* Aligne l'icône et le texte en ligne */
+  align-items: center; /* Centre verticalement l'icône et le texte */
+  padding: 10px; /* Ajoute un espace intérieur */
+  border-radius: 4px; /* Arrondit les bords des liens */
+}
+
+.sidebar ul li a i {
+  margin-right: 10px; /* Espace entre l'icône et le texte */
+}
+
+/* Classe pour l'arabe : espace entre l'icône et le texte */
+.arabic .sidebar ul li a i {
+  margin-right: 0; /* Supprime l'espace entre l'icône et le texte en arabe */
+}
+
+/* Styles pour le hover et l'état actif */
+.sidebar ul li a:hover {
+  background-color: #007bff; /* Change la couleur de fond au survol */
+}
+
+.sidebar ul li a.active {
+  background-color: #007bff; /* Couleur de fond pour le lien actif */
+}

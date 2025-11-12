@@ -46,6 +46,22 @@
           "hash": "13044518069027839699"
         },
         {
+          "file": ".nx/cache/file-map.json",
+          "hash": "9830260594907344745"
+        },
+        {
+          "file": ".nx/cache/lockfile.hash",
+          "hash": "9513455950802265680"
+        },
+        {
+          "file": ".nx/cache/parsed-lock-file.json",
+          "hash": "7652875642754873514"
+        },
+        {
+          "file": ".nx/cache/project-graph.json",
+          "hash": "5497712539607281447"
+        },
+        {
           "file": ".vscode/extensions.json",
           "hash": "5331566439708925252"
         },
@@ -105,19 +121,32 @@
           ]
         },
         {
-          "file": "src/app/Activities/activity.ts",
-          "hash": "17475101586131455370",
+          "file": "src/app/activities/activity.service.ts",
+          "hash": "15958460806849491344",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/activities/activity.ts",
+          "hash": "345655631600925987",
           "deps": [
             "npm:rxjs"
           ]
         },
         {
-          "file": "src/app/Activities/mock-activity-list.ts",
-          "hash": "7786067604142052675"
+          "file": "src/app/activities/mock-activity-list.ts",
+          "hash": "925083427996557951"
+        },
+        {
+          "file": "src/app/activities/planning.ts",
+          "hash": "8627998200197827252"
         },
         {
           "file": "src/app/app-routing.module.ts",
-          "hash": "4122786835844782851",
+          "hash": "3062194568753085103",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/router"
@@ -129,7 +158,7 @@
         },
         {
           "file": "src/app/app.component.html",
-          "hash": "7503611442899846117"
+          "hash": "1593832721169463098"
         },
         {
           "file": "src/app/app.component.spec.ts",
@@ -148,11 +177,13 @@
         },
         {
           "file": "src/app/app.module.ts",
-          "hash": "6131909835961935596",
+          "hash": "10713401761330046737",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/platform-browser",
-            "npm:@angular/cdk"
+            "npm:@angular/cdk",
+            "npm:angular-in-memory-web-api",
+            "npm:@angular/common"
           ]
         },
         {
@@ -171,19 +202,100 @@
           ]
         },
         {
-          "file": "src/app/professor/all-professor/all-professor.component.css",
-          "hash": "10122892008536308646"
+          "file": "src/app/global/prof-global/prof-global.component.css",
+          "hash": "3513411250252572534"
         },
         {
-          "file": "src/app/professor/all-professor/all-professor.component.html",
-          "hash": "14159205959785705743"
+          "file": "src/app/global/prof-global/prof-global.component.html",
+          "hash": "4150956888657376571"
         },
         {
-          "file": "src/app/professor/all-professor/all-professor.component.ts",
-          "hash": "14956709447705415234",
+          "file": "src/app/global/prof-global/prof-global.component.ts",
+          "hash": "181537147455143982",
+          "deps": [
+            "npm:@angular/core",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/in-memory-data.service.ts",
+          "hash": "5128663903815945752",
+          "deps": [
+            "npm:@angular/core",
+            "npm:angular-in-memory-web-api"
+          ]
+        },
+        {
+          "file": "src/app/loader/loader.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/loader/loader.component.html",
+          "hash": "676815157141332690"
+        },
+        {
+          "file": "src/app/loader/loader.component.ts",
+          "hash": "15848668978274216278",
           "deps": [
             "npm:@angular/core"
           ]
+        },
+        {
+          "file": "src/app/professor/all-professor/all-professor.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/professor/all-professor/all-professor.component.html",
+          "hash": "2731368821750485646"
+        },
+        {
+          "file": "src/app/professor/all-professor/all-professor.component.ts",
+          "hash": "975799734553159105",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/professor/professor.ts",
+          "hash": "12211575395957998083"
+        },
+        {
+          "file": "src/app/room/all-room/all-room.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/room/all-room/all-room.component.html",
+          "hash": "14703624188953096707"
+        },
+        {
+          "file": "src/app/room/all-room/all-room.component.ts",
+          "hash": "2446696383524124397",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/room/room.ts",
+          "hash": "15989028670895613808"
+        },
+        {
+          "file": "src/app/student/all-student/all-student.component.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "src/app/student/all-student/all-student.component.html",
+          "hash": "12565660129519332921"
+        },
+        {
+          "file": "src/app/student/all-student/all-student.component.ts",
+          "hash": "3484812849400410592",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/student/student.ts",
+          "hash": "8807587003191628982"
         },
         {
           "file": "src/assets/.gitkeep",
@@ -195,7 +307,7 @@
         },
         {
           "file": "src/index.html",
-          "hash": "4181091736144793190"
+          "hash": "3174243376031498239"
         },
         {
           "file": "src/main.ts",

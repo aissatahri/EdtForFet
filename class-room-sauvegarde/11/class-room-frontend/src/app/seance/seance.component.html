@@ -1,0 +1,149 @@
+<div class="container mt-4">
+    <h2>Gestion des Séances</h2>
+  
+    <!-- Formulaire de création/modification d'une séance -->
+    <form (ngSubmit)="onSubmitSeanceForm()" [formGroup]="seanceForm!">
+      <div class="row mb-3">
+
+        <div class="col-md-3">
+            <label for="niveau">Niveau</label>
+            <select id="niveau" class="form-control" formControlName="niveau" (change)="onNiveauChange($event)">
+              <option *ngFor="let niveau of niveaux$ |async" [value]="niveau.idNiveau">
+                {{ niveau.libelle }}
+              </option>
+            </select>
+          </div>
+
+
+        <div class="col-md-3">
+          <label for="classe">Classe</label>
+          <select id="classe" class="form-control" formControlName="classe" (change)="onClasseChange($event)">
+            <option *ngFor="let classe of classes" [value]="classe.idClasse">
+              {{ classe.libelle }}
+            </option>
+          </select>
+        </div>
+  
+        <div class="col-md-3">
+          <label for="sousClasse">Sous-classe</label>
+          <select id="sousClasse" class="form-control" formControlName="sousClasse">
+            <option *ngFor="let sousClasse of sousClasses" [value]="sousClasse.idSousClasse">
+              {{ sousClasse.libelle }}
+            </option>
+          </select>
+        </div>
+  
+        <div class="col-md-3">
+          <label for="jour">Jour</label>
+          <select id="jour" class="form-control" formControlName="jour">
+            <option *ngFor="let jour of jours" [value]="jour">
+              {{ jour }}
+            </option>
+          </select>
+        </div>
+      </div>
+  
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="heureDebut">Heure de début</label>
+          <input id="heureDebut" type="time" class="form-control" formControlName="heureDebut" />
+        </div>
+  
+        <div class="col-md-4">
+          <label for="heureFin">Heure de fin</label>
+          <input id="heureFin" type="time" class="form-control" formControlName="heureFin" />
+        </div>
+  
+        <div class="col-md-4">
+          <label for="typeSeance">Type de Séance</label>
+          <input id="typeSeance" type="text" class="form-control" formControlName="typeSeance" />
+        </div>
+      </div>
+  
+      <div class="row mb-3">
+        <div class="col-md-12 text-center">
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> Sauvegarder
+          </button>
+          <button type="button" class="btn btn-secondary ms-2" (click)="resetForm()">
+            <i class="fas fa-times"></i> Annuler
+          </button>
+        </div>
+      </div>
+    </form>
+  
+    <hr />
+  
+    <!-- Liste des séances -->
+    <h3>Liste des Séances</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Classe</th>
+          <th>Sous-classe</th>
+          <th>Jour</th>
+          <th>Heure de début</th>
+          <th>Heure de fin</th>
+          <th>Type de Séance</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let seance of seances">
+          <td>{{ seance.classe?.libelle }}</td>
+          <td>{{ seance.sousClasse?.libelle }}</td>
+          <td>{{ seance.jour }}</td>
+          <td>{{ seance.heureDebut }}</td>
+          <td>{{ seance.heureFin }}</td>
+          <td>{{ seance.typeSeance }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="editSeance(seance)">
+              <i class="fas fa-edit"></i> Éditer
+            </button>
+            <button class="btn btn-danger btn-sm ms-2" (click)="showConfirmDeleteModal(seance.idSeance!)">
+              <i class="fas fa-trash"></i> Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Modal de succès -->
+<div class="modal fade" #successModal id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Succès</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          La séance a été enregistrée avec succès.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal de confirmation de suppression -->
+ <div class="modal fade" #confirmDeleteModal id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Êtes-vous sûr de vouloir supprimer cette séance ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  

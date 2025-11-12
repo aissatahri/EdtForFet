@@ -1,0 +1,17 @@
+.img-thumbnail {
+    max-width: 200px;
+    max-height: 200px;
+  }
+  .img-preview {
+    max-width: 100%; /* Limite la largeur de l'aperçu de l'image */
+    height: auto; /* Maintient le ratio de l'image */
+    margin-top: 10px; /* Ajout d'un espace au-dessus de l'image */
+    border: 1px solid #ccc; /* Bordure pour l'aperçu */
+    padding: 5px; /* Ajout de l'espace intérieur */
+    border-radius: 4px; /* Coins arrondis */
+  }
+  
+  .card {
+    margin: 20px; /* Espacement autour de la carte */
+  }
+  

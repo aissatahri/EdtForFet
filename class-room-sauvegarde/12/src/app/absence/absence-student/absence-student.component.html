@@ -1,0 +1,35 @@
+<div *ngIf="absencesParPeriode?.size! > 0; else noAbsences">
+  <h3>{{ 'ABSENCES.TITLE' | translate }}</h3>
+  <table class="table table-striped">
+    <tbody>
+      <!-- Itérer sur les périodes -->
+      <ng-container *ngFor="let periode of absencesParPeriode.keys()">
+        <!-- Afficher la période sur une seule ligne -->
+        <tr>
+          <td colspan="3" class="font-weight-bold">{{ periode }}</td>
+        </tr>
+
+        <!-- En-tête des colonnes pour les absences -->
+        <tr>
+          <th>{{ 'ABSENCES.DATE' | translate }}</th>
+          <th>{{ 'ABSENCES.MOTIF' | translate }}</th>
+        </tr>
+
+        <!-- Itérer sur les absences associées à la période -->
+        <ng-container *ngFor="let absence of absencesParPeriode.get(periode)">
+          <tr>
+            <!-- Date de passage -->
+            <td>{{ absence.date | date: 'yyyy-MM-dd' }}</td>
+
+            <!-- Motif de l'absence -->
+            <td>{{ absence.motif || ('ABSENCES.MOTIF_NON_DEFINI' | translate) }}</td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #noAbsences>
+  <p>{{ 'ABSENCES.AUCUNE_ABSENCE' | translate }}</p>
+</ng-template>
