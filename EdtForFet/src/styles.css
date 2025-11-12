@@ -15,6 +15,143 @@ body {
 	background: #fbfbfd;
 	color: #0f172a;
 	padding-bottom: 150px; /* Espace pour le footer fixe */
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+	background: #1a1a2e;
+	color: #e0e0e0;
+}
+
+body.dark-mode .app-main {
+	background: #1a1a2e;
+}
+
+body.dark-mode table {
+	background: #16213e;
+	color: #e0e0e0;
+	border-color: #0f3460;
+}
+
+body.dark-mode table thead {
+	background: #0f3460;
+	color: #e94560;
+}
+
+body.dark-mode table th {
+	background: #0f3460;
+	color: #e94560;
+	border-color: #16213e;
+}
+
+body.dark-mode table td {
+	background: #16213e;
+	border-color: #0f3460;
+}
+
+body.dark-mode table td.empty-cell {
+	background: #0d1b2a !important;
+}
+
+body.dark-mode .school-year-header {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+}
+
+body.dark-mode button {
+	background: #0f3460;
+	color: #e0e0e0;
+	border-color: #16213e;
+}
+
+body.dark-mode button:hover {
+	background: #16213e;
+	border-color: #667eea;
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode select,
+body.dark-mode textarea {
+	background: #16213e;
+	color: #e0e0e0;
+	border-color: #0f3460;
+}
+
+body.dark-mode .upload-section {
+	background: #16213e;
+	border-color: #0f3460;
+}
+
+body.dark-mode .config-modal {
+	background: #16213e;
+	color: #e0e0e0;
+}
+
+body.dark-mode .config-section {
+	background: #1a1a2e;
+}
+
+body.dark-mode .tab-btn {
+	background: #0f3460;
+	color: #e0e0e0;
+}
+
+body.dark-mode .tab-btn.active {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+}
+
+body.dark-mode .instruction-box {
+	background: #0f3460;
+	border-color: #667eea;
+}
+
+body.dark-mode .rename-item {
+	background: #1a1a2e;
+	border-color: #0f3460;
+}
+
+body.dark-mode .original-name {
+	color: #e94560;
+}
+
+body.dark-mode .success-modal {
+	background: #16213e;
+	color: #e0e0e0;
+}
+
+body.dark-mode .cell-content .subject {
+	color: #e0e0e0;
+}
+
+body.dark-mode .cell-content .room,
+body.dark-mode .cell-content .students,
+body.dark-mode .cell-content .teacher {
+	color: #b0b0b0;
+}
+
+body.dark-mode .supplementary-section {
+	background: #16213e;
+	border-color: #0f3460;
+}
+
+body.dark-mode .class-badge {
+	background: #0f3460;
+	color: #e0e0e0;
+}
+
+body.dark-mode .subjects-table-single {
+	background: #16213e;
+}
+
+body.dark-mode .subjects-table-single th {
+	background: #0f3460;
+}
+
+body.dark-mode .vacant-rooms-list .room-item {
+	background: #0f3460;
+	color: #e0e0e0;
 }
 
 .app-shell {

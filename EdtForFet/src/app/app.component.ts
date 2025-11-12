@@ -33,6 +33,9 @@ export class AppComponent {
   showSuccessModal: boolean = false;
   successMessage: string = '';
   
+  // Dark Mode
+  isDarkMode: boolean = false;
+  
   // Configuration and localStorage
   showConfigModal: boolean = false;
   configActiveTab: string = 'info'; // 'info', 'teachers', 'rooms', 'classes'
@@ -92,6 +95,28 @@ export class AppComponent {
   constructor(private pdfFontsService: PdfFontsService) {
     // Load configuration and data from localStorage on init
     this.loadFromLocalStorage();
+    // Load dark mode preference
+    this.loadDarkModePreference();
+  }
+  
+  loadDarkModePreference() {
+    const savedMode = localStorage.getItem('darkMode');
+    this.isDarkMode = savedMode === 'true';
+    this.applyDarkMode();
+  }
+  
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    localStorage.setItem('darkMode', this.isDarkMode.toString());
+    this.applyDarkMode();
+  }
+  
+  applyDarkMode() {
+    if (this.isDarkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
   }
 
   onParsed(result: any) {

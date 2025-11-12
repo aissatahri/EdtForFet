@@ -6,6 +6,12 @@
     <div class="header-row">
       <h2 class="main-title">جداول الحصص</h2>
       
+      <!-- Dark Mode Toggle Button -->
+      <button (click)="toggleDarkMode()" class="dark-mode-toggle" [title]="isDarkMode ? 'وضع النهار' : 'الوضع الليلي'">
+        <span *ngIf="!isDarkMode">🌙</span>
+        <span *ngIf="isDarkMode">☀️</span>
+      </button>
+      
       <!-- Configuration buttons - Top left - Only show after successful import -->
       <div class="config-buttons" *ngIf="parsed">
         <button (click)="openConfig()" class="config-btn" title="إعدادات">⚙️</button>
