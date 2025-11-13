@@ -5,7 +5,6 @@ import { ImportComponent } from './import/import.component';
 import { DonationComponent } from './donation/donation.component';
 import { FooterComponent } from './footer/footer.component';
 import { PwaUpdateComponent } from './pwa-update/pwa-update.component';
-import { PwaInstallButtonComponent } from './pwa-install-button/pwa-install-button.component';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { PdfFontsService } from './pdf-fonts.service';
@@ -13,7 +12,7 @@ import { PdfFontsService } from './pdf-fonts.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ImportComponent, CommonModule, FormsModule, DonationComponent, FooterComponent, PwaUpdateComponent, PwaInstallButtonComponent],
+  imports: [ImportComponent, CommonModule, FormsModule, DonationComponent, FooterComponent, PwaUpdateComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

@@ -7,6 +7,20 @@
       </div>
     </div>
     <div class="footer-right">
+      <!-- PWA Install/Uninstall Button -->
+      <button *ngIf="(canInstall$ | async) && !isInstalled" 
+              (click)="installPwa()" 
+              class="pwa-btn install-btn"
+              title="تثبيت التطبيق">
+        📲 تثبيت
+      </button>
+      <button *ngIf="isInstalled" 
+              (click)="uninstallPwa()" 
+              class="pwa-btn uninstall-btn"
+              title="إلغاء تثبيت التطبيق">
+        🗑️ إلغاء التثبيت
+      </button>
+      <!-- About Button -->
       <button (click)="openAboutModal()" class="about-link">حول التطبيق</button>
     </div>
   </div>

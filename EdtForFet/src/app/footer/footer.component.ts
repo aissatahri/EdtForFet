@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { PwaInstallService } from '../pwa-install.service';
 
 @Component({
   selector: 'app-footer',
@@ -16,12 +17,48 @@ export class FooterComponent implements OnInit {
   visitorCountry = '';
   visitorCount = 0;
   showVisitorInfo = false;
+  canInstall$ = this.pwaInstallService.canInstall$;
+  isInstalled = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private pwaInstallService: PwaInstallService
+  ) {}
 
   ngOnInit() {
     this.loadVisitorInfo();
     this.updateVisitorCount();
+    this.checkIfInstalled();
+  }
+
+  checkIfInstalled() {
+    // Check if app is running in standalone mode (installed as PWA)
+    if (typeof window !== 'undefined') {
+      this.isInstalled = window.matchMedia('(display-mode: standalone)').matches ||
+                        (window.navigator as any).standalone === true;
+    }
+  }
+
+  async installPwa() {
+    const accepted = await this.pwaInstallService.promptInstall();
+    if (accepted) {
+      console.log('PWA installée avec succès ! 🎉');
+      // After installation, check again
+      setTimeout(() => this.checkIfInstalled(), 1000);
+    }
+  }
+
+  async uninstallPwa() {
+    if (confirm('هل تريد حقاً إلغاء تثبيت التطبيق؟\n\nستحتاج إلى إعادة تثبيته من المتصفح إذا غيرت رأيك.')) {
+      alert('لإلغاء التثبيت:\n\n' +
+            '📱 على الهاتف:\n' +
+            '- اضغط مطولاً على أيقونة التطبيق\n' +
+            '- اختر "إزالة" أو "حذف التطبيق"\n\n' +
+            '💻 على الكمبيوتر:\n' +
+            '- افتح chrome://apps\n' +
+            '- انقر بزر الماوس الأيمن على التطبيق\n' +
+            '- اختر "إزالة من Chrome"');
+    }
   }
 
   loadVisitorInfo() {
