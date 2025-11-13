@@ -408,13 +408,15 @@
         
         <div class="config-row">
           <label>🔤 خط PDF (للطباعة):</label>
-          <select [(ngModel)]="config.pdfFont" class="font-selector">
-            <option value="Amiri">Amiri (تقليدي - موصى به)</option>
-            <option value="Tahoma">Tahoma</option>
-            <option value="Simplified Arabic">Simplified Arabic</option>
-            <option value="Traditional Arabic">Traditional Arabic</option>
-          </select>
-          <p class="font-hint">💡 اختبر الخطوط المختلفة لاختيار الأنسب للطباعة</p>
+            <select [(ngModel)]="config.pdfFont" class="font-selector">
+              <option value="Amiri">Amiri (تقليدي - موصى به)</option>
+              <option value="Tahoma">Tahoma</option>
+              <option value="Simplified Arabic">Simplified Arabic</option>
+              <option value="Traditional Arabic">Traditional Arabic</option>
+              <option value="Calibri">Calibri</option>
+              <option value="Cambria">Cambria</option>
+            </select>
+            <p class="font-hint">💡 اختبر الخطوط المختلفة لاختيار الأنسب للطباعة</p>
         </div>
       </div>
       

@@ -52,7 +52,7 @@ export class AppComponent {
     headerLine2: 'وزارة التربية الوطنية والتعليم الأولي والرياضة',
     headerLine3: '',
     headerLine4: 'جهة الشرق – مديرية وجدة – أنجاد – ثانوية عبد الرحمان حجيرة الإعدادية – وحدة',
-    pdfFont: 'Amiri', // Font for PDF: Amiri, Tahoma, Simplified Arabic, Traditional Arabic
+    pdfFont: 'Amiri', // Font for PDF: Amiri, Tahoma, Simplified Arabic, Traditional Arabic, Calibri, Cambria
     renames: {
       teachers: {} as any, // { oldName: newName }
       rooms: {} as any,
