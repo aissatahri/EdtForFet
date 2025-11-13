@@ -52,6 +52,7 @@ export class AppComponent {
     headerLine2: 'وزارة التربية الوطنية والتعليم الأولي والرياضة',
     headerLine3: '',
     headerLine4: 'جهة الشرق – مديرية وجدة – أنجاد – ثانوية عبد الرحمان حجيرة الإعدادية – وحدة',
+    pdfFont: 'Amiri', // Font for PDF: Amiri, Tahoma, Simplified Arabic, Traditional Arabic
     renames: {
       teachers: {} as any, // { oldName: newName }
       rooms: {} as any,
@@ -376,7 +377,7 @@ export class AppComponent {
     
     // Académie – Direction – Établissement sur la même ligne
     doc.setFontSize(9);
-    doc.setFont('Amiri', 'normal');
+    doc.setFont(this.config.pdfFont, 'normal');
     
     const institutionLine: string[] = [];
     if (this.config.establishment) institutionLine.push(this.config.establishment);
@@ -397,7 +398,7 @@ export class AppComponent {
     
     // Title: جدول الحصص + Entity name + subject on the same line
     doc.setFontSize(14);
-    doc.setFont('Amiri', 'bold');
+    doc.setFont(this.config.pdfFont, 'bold');
     
     // Build the title line (RTL: start with title, then person, then subject)
     let titleLine = 'جدول الحصص';
@@ -435,7 +436,7 @@ export class AppComponent {
     
     // Load and set Arabic fonts
     await this.pdfFontsService.loadFonts(doc);
-    doc.setFont('Amiri');
+    doc.setFont(this.config.pdfFont);
     
     // Get subject if teacher mode
     let entitySubject = '';
@@ -706,7 +707,7 @@ export class AppComponent {
 
     const doc = new jsPDF('p', 'mm', 'a4'); // portrait
     await this.pdfFontsService.loadFonts(doc);
-    doc.setFont('Amiri');
+    doc.setFont(this.config.pdfFont);
     
     for (let i = 0; i < this.entityOptions.length; i++) {
       const entity = this.entityOptions[i];
@@ -995,14 +996,14 @@ export class AppComponent {
     
     const doc = new jsPDF('p', 'mm', 'a4'); // portrait, A4
     await this.pdfFontsService.loadFonts(doc);
-    doc.setFont('Amiri');
+    doc.setFont(this.config.pdfFont);
     
     const pageWidth = doc.internal.pageSize.width;
     const margin = 5;
     
     // Title without logo/header
     doc.setFontSize(14);
-    doc.setFont('Amiri', 'bold');
+    doc.setFont(this.config.pdfFont, 'bold');
     doc.text('القاعات الشاغرة', pageWidth / 2, 15, { align: 'center' });
     
     doc.setFontSize(11);
@@ -1138,14 +1139,14 @@ export class AppComponent {
     
     const doc = new jsPDF('l', 'mm', 'a3'); // landscape, A3
     await this.pdfFontsService.loadFonts(doc);
-    doc.setFont('Amiri');
+    doc.setFont(this.config.pdfFont);
     
     const pageWidth = doc.internal.pageSize.width;
     const margin = 5;
     
     // Title
     doc.setFontSize(14);
-    doc.setFont('Amiri', 'bold');
+    doc.setFont(this.config.pdfFont, 'bold');
     const titleText = this.globalViewOption === 'teachersByDay' 
       ? 'جدول الحصص الشامل - الأساتذة حسب الأيام' 
       : 'جدول الحصص الشامل - الأيام حسب الأساتذة';

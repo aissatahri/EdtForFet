@@ -41,7 +41,7 @@ testem.log
 .DS_Store
 Thumbs.db
 .vercel
-
+--open
 # Temporary favicon files
 favicon-16.png
 favicon-32.png

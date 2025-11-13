@@ -405,6 +405,17 @@
           <label>السطر الرابع (معلومات المؤسسة):</label>
           <input type="text" [(ngModel)]="config.headerLine4" placeholder="مثال: جهة الشرق – مديرية وجدة – أنجاد – ثانوية عبد الرحمان حجيرة الإعدادية – وحدة">
         </div>
+        
+        <div class="config-row">
+          <label>🔤 خط PDF (للطباعة):</label>
+          <select [(ngModel)]="config.pdfFont" class="font-selector">
+            <option value="Amiri">Amiri (تقليدي - موصى به)</option>
+            <option value="Tahoma">Tahoma</option>
+            <option value="Simplified Arabic">Simplified Arabic</option>
+            <option value="Traditional Arabic">Traditional Arabic</option>
+          </select>
+          <p class="font-hint">💡 اختبر الخطوط المختلفة لاختيار الأنسب للطباعة</p>
+        </div>
       </div>
       
       <!-- Tab Content: Teachers -->
