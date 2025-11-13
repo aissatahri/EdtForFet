@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Générateur d'icônes PWA - جداول الحصص</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    button {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      display: block;
+      margin: 20px auto;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    .preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .icon-preview {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .icon-preview img {
+      display: block;
+      margin: 0 auto 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .icon-preview p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    canvas {
+      display: none;
+    }
+    .info {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📱 مولد أيقونات PWA</h1>
+    
+    <div class="info">
+      <p><strong>تعليمات:</strong></p>
+      <p>1. انقر على زر "توليد الأيقونات" لإنشاء جميع الأحجام المطلوبة</p>
+      <p>2. انقر بزر الماوس الأيمن على كل صورة واحفظها في المجلد: <code>src/assets/icons/</code></p>
+      <p>3. استبدل الملفات الموجودة بنفس الأسماء</p>
+    </div>
+    
+    <button onclick="generateIcons()">🎨 توليد الأيقونات</button>
+    
+    <div class="preview" id="preview"></div>
+    
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+    
+    function generateIcons() {
+      const preview = document.getElementById('preview');
+      preview.innerHTML = '';
+      
+      sizes.forEach(size => {
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = size;
+        canvas.height = size;
+        
+        // Gradient background
+        const gradient = ctx.createLinearGradient(0, 0, size, size);
+        gradient.addColorStop(0, '#667eea');
+        gradient.addColorStop(1, '#764ba2');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+        
+        // Calendar icon
+        const padding = size * 0.15;
+        const calendarWidth = size - (padding * 2);
+        const calendarHeight = size - (padding * 2);
+        const headerHeight = calendarHeight * 0.25;
+        
+        // Calendar body (white)
+        ctx.fillStyle = 'white';
+        ctx.roundRect(padding, padding + headerHeight * 0.3, calendarWidth, calendarHeight - headerHeight * 0.3, size * 0.08);
+        ctx.fill();
+        
+        // Calendar header (darker purple)
+        ctx.fillStyle = '#4c51bf';
+        ctx.roundRect(padding, padding, calendarWidth, headerHeight, size * 0.08);
+        ctx.fill();
+        
+        // Rings on top
+        const ringSize = size * 0.06;
+        const ringY = padding + headerHeight * 0.15;
+        ctx.fillStyle = 'white';
+        
+        for (let i = 0; i < 3; i++) {
+          const ringX = padding + (calendarWidth / 4) * (i + 0.5);
+          ctx.beginPath();
+          ctx.arc(ringX, ringY, ringSize, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
+        // Grid dots (simplified schedule representation)
+        ctx.fillStyle = '#667eea';
+        const dotSize = size * 0.04;
+        const startY = padding + headerHeight + size * 0.1;
+        const rows = 4;
+        const cols = 3;
+        
+        for (let row = 0; row < rows; row++) {
+          for (let col = 0; col < cols; col++) {
+            const x = padding + (calendarWidth / (cols + 1)) * (col + 1);
+            const y = startY + (row * (calendarHeight - headerHeight - size * 0.15) / rows);
+            ctx.beginPath();
+            ctx.arc(x, y, dotSize, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        
+        // Convert to image
+        const dataUrl = canvas.toDataURL('image/png');
+        
+        // Create preview
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'icon-preview';
+        
+        const img = document.createElement('img');
+        img.src = dataUrl;
+        img.width = size > 192 ? 192 : size;
+        img.height = size > 192 ? 192 : size;
+        
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `icon-${size}x${size}.png`;
+        link.appendChild(img);
+        
+        const label = document.createElement('p');
+        label.innerHTML = `<strong>${size}x${size}</strong>`;
+        
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = '⬇️ تحميل';
+        downloadBtn.style.margin = '10px auto 0';
+        downloadBtn.style.padding = '8px 15px';
+        downloadBtn.style.fontSize = '12px';
+        downloadBtn.onclick = () => {
+          link.click();
+        };
+        
+        iconDiv.appendChild(link);
+        iconDiv.appendChild(label);
+        iconDiv.appendChild(downloadBtn);
+        preview.appendChild(iconDiv);
+      });
+    }
+    
+    // Helper function for rounded rectangles
+    CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+      if (w < 2 * r) r = w / 2;
+      if (h < 2 * r) r = h / 2;
+      this.beginPath();
+      this.moveTo(x + r, y);
+      this.arcTo(x + w, y, x + w, y + h, r);
+      this.arcTo(x + w, y + h, x, y + h, r);
+      this.arcTo(x, y + h, x, y, r);
+      this.arcTo(x, y, x + w, y, r);
+      this.closePath();
+      return this;
+    };
+  </script>
+</body>
+</html>
