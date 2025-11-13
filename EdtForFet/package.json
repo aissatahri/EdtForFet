@@ -7,7 +7,8 @@
     "prebuild": "node generate-env-config.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate-icons": "node generate-pwa-icons.js"
   },
   "private": true,
   "dependencies": {
