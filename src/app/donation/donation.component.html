@@ -1,0 +1,49 @@
+<div class="donation-trigger" *ngIf="isDonationEnabled">
+  <button (click)="openDonationModal()" class="donate-button" title="ادعم هذا المشروع">
+    ❤️
+  </button>
+</div>
+
+<div class="donation-modal" *ngIf="showDonationModal" (click)="closeDonationModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-button" (click)="closeDonationModal()">×</button>
+    
+    <div class="modal-header">
+      <div class="heart-icon">💛❤️</div>
+      <h2>ادعم هذا المشروع!</h2>
+      <p class="subtitle">هذا التطبيق مجاني 100%.</p>
+      <p class="description">تبرعك يساعد في صيانة وتحسينه.</p>
+    </div>
+
+    <div class="donation-amounts">
+      <button 
+        *ngFor="let donation of donationAmounts" 
+        class="amount-button"
+        [ngClass]="donation.color"
+        (click)="donateWithPayPal(donation.amount)">
+        DH {{ donation.amount }}
+      </button>
+    </div>
+
+    <div class="payment-section">
+      <p class="or-text">أرسل تبرعك عبر:</p>
+      
+      <button class="paypal-button" (click)="donateWithPayPal(0)">
+        <span class="paypal-icon">💳</span>
+        تبرع عبر PayPal
+      </button>
+
+      <div class="rib-section">
+        <div class="rib-box" (click)="copyRIB()">
+          <span class="rib-icon">🏦</span>
+          <span class="rib-text">{{ rib }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="thank-you">
+      <span class="emoji">🙏</span>
+      <span class="text">شكراً لدعمك!</span>
+    </div>
+  </div>
+</div>

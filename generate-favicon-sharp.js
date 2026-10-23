@@ -1,0 +1,66 @@
+const sharp = require('sharp');
+const fs = require('fs');
+
+const svgBuffer = Buffer.from(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="128" height="128" fill="url(#grad)" rx="20"/>
+  
+  <!-- Calendar icon -->
+  <!-- Header -->
+  <rect x="20" y="25" width="88" height="15" fill="white" rx="3"/>
+  
+  <!-- Body border -->
+  <rect x="20" y="40" width="88" height="68" fill="none" stroke="white" stroke-width="4" rx="2"/>
+  
+  <!-- Grid lines -->
+  <!-- Vertical -->
+  <line x1="49.33" y1="40" x2="49.33" y2="108" stroke="white" stroke-width="2"/>
+  <line x1="78.67" y1="40" x2="78.67" y2="108" stroke="white" stroke-width="2"/>
+  
+  <!-- Horizontal -->
+  <line x1="20" y1="62.67" x2="108" y2="62.67" stroke="white" stroke-width="2"/>
+  <line x1="20" y1="85.33" x2="108" y2="85.33" stroke="white" stroke-width="2"/>
+  
+  <!-- Dots in cells -->
+  <circle cx="35" cy="51" r="4" fill="white"/>
+  <circle cx="64" cy="51" r="4" fill="white"/>
+  <circle cx="93" cy="51" r="4" fill="white"/>
+  
+  <circle cx="35" cy="74" r="4" fill="white"/>
+  <circle cx="64" cy="74" r="4" fill="white"/>
+  
+  <circle cx="35" cy="96" r="4" fill="white"/>
+  <circle cx="93" cy="96" r="4" fill="white"/>
+</svg>
+`);
+
+// Generate different sizes
+const sizes = [16, 32, 48, 64];
+
+Promise.all(sizes.map(size => 
+  sharp(svgBuffer)
+    .resize(size, size)
+    .png()
+    .toFile(`./favicon-${size}.png`)
+)).then(() => {
+  console.log('✅ PNG favicons generated!');
+  
+  // Generate main favicon.ico (32x32)
+  return sharp(svgBuffer)
+    .resize(32, 32)
+    .toFormat('png')
+    .toBuffer();
+}).then(buffer => {
+  fs.writeFileSync('./src/favicon.ico', buffer);
+  console.log('✅ favicon.ico generated successfully!');
+}).catch(err => {
+  console.error('Error:', err);
+});

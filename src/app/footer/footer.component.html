@@ -1,0 +1,139 @@
+<footer class="app-footer">
+  <div class="footer-content">
+    <div class="footer-left">
+      <div class="visitor-info" *ngIf="showVisitorInfo">
+        <span class="visitor-location">📍 {{ visitorCity }}, {{ visitorCountry }}</span>
+        <span class="visitor-count">👥 زائر رقم: {{ visitorCount }}</span>
+      </div>
+    </div>
+    <div class="footer-right">
+      <!-- PWA Install/Uninstall Button -->
+      <button *ngIf="(canInstall$ | async) && !isInstalled" 
+              (click)="installPwa()" 
+              class="pwa-btn install-btn"
+              title="تثبيت التطبيق">
+        📲 تثبيت
+      </button>
+      <button *ngIf="isInstalled" 
+              (click)="uninstallPwa()" 
+              class="pwa-btn uninstall-btn"
+              title="إلغاء تثبيت التطبيق">
+        🗑️ إلغاء التثبيت
+      </button>
+      <!-- About Button -->
+      <button (click)="openAboutModal()" class="about-link">حول التطبيق</button>
+    </div>
+  </div>
+</footer>
+
+<!-- About Modal -->
+<div class="about-modal" *ngIf="showAboutModal" (click)="closeAboutModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="close-button" (click)="closeAboutModal()">×</button>
+    
+    <div class="modal-header">
+      <h2>📚 حول TimeTableEdtForFet</h2>
+    </div>
+
+    <div class="modal-body">
+      <div class="info-section">
+        <h3>🎯 الوصف</h3>
+        <p>
+          <strong>TimeTableEdtForFet</strong> هو تطبيق ويب تم تطويره لتسهيل إنشاء 
+          وتصدير جداول الحصص من ملفات FET (برنامج جدولة الوقت المجاني).
+        </p>
+      </div>
+
+      <div class="info-section">
+        <h3>✨ الميزات الرئيسية</h3>
+        <ul>
+          <li>📥 استيراد ملفات FET (XML)</li>
+          <li>📊 عرض تفاعلي لجداول الحصص</li>
+          <li>📄 تصدير PDF احترافي (A4 و A3)</li>
+          <li>🌐 عرض شامل مع خيارين للعرض</li>
+          <li>🏢 إدارة القاعات الشاغرة</li>
+          <li>⚙️ إعدادات مخصصة (الشعار، المعلومات)</li>
+          <li>🔄 نظام إعادة تسمية الكيانات</li>
+          <li>🎨 دعم كامل للغة العربية (RTL)</li>
+        </ul>
+      </div>
+
+      <div class="info-section">
+        <h3>👨‍💻 المطور</h3>
+        <p class="developer-info">
+          <strong>AISSA TAHRI</strong><br>
+          مطور Full Stack<br>
+          📧 البريد الإلكتروني: <a href="mailto:aissatahri81&#64;gmail.com">aissatahri81&#64;gmail.com</a>
+        </p>
+      </div>
+
+      <div class="info-section">
+        <h3>🛠️ التقنيات المستخدمة</h3>
+        <div class="tech-tags">
+          <span class="tech-tag">Angular</span>
+          <span class="tech-tag">TypeScript</span>
+          <span class="tech-tag">jsPDF</span>
+          <span class="tech-tag">HTML/CSS</span>
+          <span class="tech-tag">PWA</span>
+        </div>
+      </div>
+
+      <div class="info-section installation-section">
+        <h3>📲 كيفية تثبيت التطبيق (PWA)</h3>
+        
+        <div class="installation-guide">
+          <div class="platform-guide">
+            <h4>📱 على الهاتف (Android):</h4>
+            <ol>
+              <li>انقر على زر <strong>"📲 تثبيت"</strong> في الأسفل</li>
+              <li>أو اختر من قائمة المتصفح: <strong>"إضافة إلى الشاشة الرئيسية"</strong></li>
+              <li>ستظهر أيقونة التطبيق على شاشتك الرئيسية</li>
+              <li>افتح التطبيق كأي تطبيق عادي! 🎉</li>
+            </ol>
+          </div>
+
+          <div class="platform-guide">
+            <h4>🍎 على iPhone/iPad (iOS):</h4>
+            <ol>
+              <li>افتح التطبيق في <strong>Safari</strong></li>
+              <li>انقر على أيقونة <strong>المشاركة</strong> (المربع مع السهم ↑)</li>
+              <li>اختر <strong>"إضافة إلى الشاشة الرئيسية"</strong></li>
+              <li>أكِّد الإضافة</li>
+              <li>ستجد الأيقونة على شاشتك الرئيسية! 🎉</li>
+            </ol>
+          </div>
+
+          <div class="platform-guide">
+            <h4>💻 على الكمبيوتر (Windows/Mac/Linux):</h4>
+            <ol>
+              <li>انقر على زر <strong>"📲 تثبيت"</strong> في الأسفل</li>
+              <li>أو من شريط العنوان: انقر على أيقونة <strong>التثبيت ⊕</strong></li>
+              <li>أو من قائمة المتصفح: <strong>"تثبيت التطبيق"</strong></li>
+              <li>سيُفتح التطبيق في نافذة مستقلة</li>
+              <li>يمكنك الوصول إليه من قائمة البرامج! 🎉</li>
+            </ol>
+          </div>
+
+          <div class="installation-benefits">
+            <h4>✨ مزايا تثبيت التطبيق:</h4>
+            <ul class="benefits-list">
+              <li>⚡ فتح أسرع من الشاشة الرئيسية</li>
+              <li>💾 يعمل بدون إنترنت (بعد التثبيت)</li>
+              <li>🎨 واجهة كاملة بدون شريط المتصفح</li>
+              <li>🔔 تحديثات تلقائية للإصدارات الجديدة</li>
+              <li>📱 تجربة مشابهة للتطبيقات الأصلية</li>
+            </ul>
+          </div>
+
+          <div class="uninstall-note">
+            <p><strong>💡 ملاحظة:</strong> لإلغاء التثبيت، انقر على زر <strong>"🗑️ إلغاء التثبيت"</strong> في الأسفل وستظهر لك التعليمات.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section version-info">
+        <p>الإصدار 1.0.0 - نونبر 2025</p>
+      </div>
+    </div>
+  </div>
+</div>

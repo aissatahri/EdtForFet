@@ -1,0 +1,24 @@
+<div class="grid-wrap" *ngIf="days && days.length">
+  <table class="tt-grid">
+    <thead>
+      <tr>
+        <th class="col-time">اليوم / الساعة</th>
+        <th *ngFor="let h of hours">{{ h }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let d of days">
+        <td class="day">{{ d.day }}</td>
+        <td *ngFor="let h of hours">
+          <ng-container *ngIf="getCell(d, h) as cell">
+            <div class="cell-entry">
+              <div class="subject">{{ cell.subject || cell.teacher || '—' }}</div>
+              <div class="room">{{ roomLabel(cell.room) }}</div>
+            </div>
+          </ng-container>
+          <div *ngIf="!getCell(d, h)" class="empty"> </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
